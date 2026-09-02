@@ -169,7 +169,7 @@ export default function Input() {
     }
     const terms = parseDirectForm(directForm)
     if (!terms) {
-      setDirectError('숫자 형식을 확인해 주세요.')
+      setDirectError('입력 형식을 확인해 주세요.')
       return
     }
     setDirectError(null)
@@ -184,7 +184,7 @@ export default function Input() {
     }
     const terms = parseExtractForm(extractForm, extractInterval)
     if (!terms) {
-      setExtractError('숫자 형식을 확인해 주세요.')
+      setExtractError('입력 형식을 확인해 주세요.')
       return
     }
     setExtractError(null)
