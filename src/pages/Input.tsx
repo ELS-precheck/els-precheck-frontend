@@ -162,9 +162,9 @@ export default function Input() {
   }
 
   const handleDirectDiagnose = () => {
-    const { underlyings, coupon, maturity } = directForm
-    if (!underlyings.trim() || !coupon.trim() || !maturity.trim()) {
-      setDirectError('기초자산, 쿠폰, 만기는 필수 항목입니다.')
+    const { underlyings, coupon, maturity, barriers } = directForm
+    if (!underlyings.trim() || !coupon.trim() || !maturity.trim() || !barriers.trim()) {
+      setDirectError('기초자산, 쿠폰, 만기, 배리어는 필수 항목입니다.')
       return
     }
     const terms = parseDirectForm(directForm)
