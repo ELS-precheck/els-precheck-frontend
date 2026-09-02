@@ -21,7 +21,7 @@ export default function Header() {
     <header className={styles.header}>
       <div className={styles.inner}>
         <div className={styles.wordmark}>
-          <img src={logoUrl} width={28} height={28} alt="ELS Precheck" />
+          <img src={logoUrl} width={28} height={28} alt="" />
           ELS Precheck
         </div>
 

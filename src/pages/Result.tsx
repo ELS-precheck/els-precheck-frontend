@@ -46,6 +46,8 @@ export default function Result() {
     const st = location.state as { elsTerms: ElsTerms; userProfile: UserProfile } | null
     if (!st) return
     setDiagnoseLoading(true)
+    setDiagnosis(null)
+    setExplain(null)
     fetchDiagnose(st.elsTerms, { volatility_scale: VOLATILITY_SCALE[volatility] })
       .then(res => { if (res.ok) setDiagnosis(res.data) })
       .finally(() => setDiagnoseLoading(false))
