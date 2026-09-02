@@ -155,7 +155,7 @@ export default function Input() {
   const toDiagnose = (elsTerms: ElsTerms) => {
     const userProfile: UserProfile = { age_band: ageBand, risk_appetite: riskAppetite }
     const raw       = parseFloat(amount)
-    const principal = amount.trim() && !isNaN(raw) ? Math.round(raw * 10000) : undefined
+    const principal = amount.trim() && !isNaN(raw) && raw > 0 ? Math.round(raw * 10000) : undefined
     navigate('/result', {
       state: { elsTerms: principal ? { ...elsTerms, principal } : elsTerms, userProfile },
     })
