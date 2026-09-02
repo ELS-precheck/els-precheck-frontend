@@ -119,9 +119,9 @@ export default function Landing() {
               <div className={styles.contextStatNum}>
                 27.8<span className={styles.contextStatNumSuffix}>조원</span>
               </div>
-              <p className={styles.contextStatTag}>2026 상반기 발행</p>
+              <p className={styles.contextStatTag}>2026 상반기 발행 (ELS+ELB)</p>
               <p className={styles.contextStatDesc}>
-                이 중 지수형이 12.4조원. 여전히 가장 많이 팔리는 구조입니다.
+                이 중 지수형 ELS가 12.4조원(44.7%)으로, 여전히 대규모로 유통되는 구조입니다.
               </p>
             </div>
           </div>
