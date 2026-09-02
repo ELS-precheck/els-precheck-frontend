@@ -45,6 +45,7 @@
   border-top-color: var(--ink);
 }
 
-.wrap:hover .popup {
+.wrap:hover .popup,
+.wrap:focus-within .popup {
   display: block;
 }

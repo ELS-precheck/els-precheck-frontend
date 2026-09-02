@@ -34,7 +34,7 @@ function formatKRW(won: number): string {
 export default function Result() {
   const location = useLocation()
   const navigate = useNavigate()
-  const state    = location.state as { elsTerms: ElsTerms; userProfile: UserProfile } | null
+  const state = location.state as { elsTerms: ElsTerms; userProfile: UserProfile } | null
 
   const [volatility,      setVolatility]      = useState<VolatilityLevel>('normal')
   const [diagnosis,       setDiagnosis]       = useState<DiagnoseData | null>(null)
@@ -43,25 +43,25 @@ export default function Result() {
   const [explainLoading,  setExplainLoading]  = useState(false)
 
   useEffect(() => {
-    if (!state) return
+    const st = location.state as { elsTerms: ElsTerms; userProfile: UserProfile } | null
+    if (!st) return
     setDiagnoseLoading(true)
-    fetchDiagnose(state.elsTerms, { volatility_scale: VOLATILITY_SCALE[volatility] })
+    fetchDiagnose(st.elsTerms, { volatility_scale: VOLATILITY_SCALE[volatility] })
       .then(res => { if (res.ok) setDiagnosis(res.data) })
       .finally(() => setDiagnoseLoading(false))
-  // state는 navigation 시 고정되므로 deps 제외
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [volatility])
+  }, [volatility, location])
 
   useEffect(() => {
-    if (!diagnosis || !state) return
+    const st = location.state as { elsTerms: ElsTerms; userProfile: UserProfile } | null
+    if (!diagnosis || !st) return
+    let cancelled = false
     setExplainLoading(true)
     setExplain(null)
-    fetchExplain(state.elsTerms, diagnosis, state.userProfile)
-      .then(res => { if (res.ok) setExplain(res.data) })
-      .finally(() => setExplainLoading(false))
-  // state는 navigation 시 고정되므로 deps 제외
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [diagnosis])
+    fetchExplain(st.elsTerms, diagnosis, st.userProfile)
+      .then(res => { if (!cancelled && res.ok) setExplain(res.data) })
+      .finally(() => { if (!cancelled) setExplainLoading(false) })
+    return () => { cancelled = true }
+  }, [diagnosis, location])
 
   if (!state) return <Navigate to="/input" replace />
 
