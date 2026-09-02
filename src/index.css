@@ -1,7 +1,5 @@
-/* ── Fonts ─────────────────────────────────────────── */
 @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css');
 
-/* ── Design Tokens ─────────────────────────────────── */
 :root {
   /* Color */
   --ink: #1A1A1A;
@@ -52,7 +50,6 @@
   --shadow-tab: 0 1px 2px rgba(0, 0, 0, 0.08);
 }
 
-/* ── Base ──────────────────────────────────────────── */
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
@@ -106,7 +103,6 @@ input:focus-visible {
   color: var(--white);
 }
 
-/* ── Layout ────────────────────────────────────────── */
 .container {
   max-width: var(--max-width);
   padding: 0 var(--page-padding);

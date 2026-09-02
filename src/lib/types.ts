@@ -1,4 +1,4 @@
-// ── API 공통 래퍼 ────────────────────────────────────────────────
+// API 공통 래퍼
 export type ApiSuccess<T> = { ok: true; data: T }
 export type ApiError = {
   ok: false
@@ -11,7 +11,7 @@ export type ApiError = {
 }
 export type ApiResponse<T> = ApiSuccess<T> | ApiError
 
-// ── ELS 조건 ─────────────────────────────────────────────────────
+// ELS 조건
 export interface ElsTerms {
   underlyings: string[]
   coupon_annual: number             // 0.08 = 연 8%
@@ -22,13 +22,13 @@ export interface ElsTerms {
   principal?: number                // 원 단위, 생략 시 10_000_000
 }
 
-// ── 사용자 프로필 ─────────────────────────────────────────────────
+// 사용자 프로필
 export interface UserProfile {
   age_band: '20_30s' | '40_50s' | '60s_plus' | null
   risk_appetite: 'conservative' | 'neutral' | 'aggressive' | null
 }
 
-// ── /presets ─────────────────────────────────────────────────────
+// /presets
 export interface Preset {
   id: string
   label: string
@@ -41,14 +41,14 @@ export interface PresetsData {
   presets: Preset[]
 }
 
-// ── /extract ─────────────────────────────────────────────────────
+// /extract
 export interface ExtractData {
   els_terms: ElsTerms
   confidence: Record<string, number>
   warnings: string[]
 }
 
-// ── /diagnose ────────────────────────────────────────────────────
+// /diagnose
 export interface DiagnoseData {
   loss_probability: number          // 0.12 = 12%
   grade: string                     // "저위험" | "중위험" | "고위험"
@@ -75,7 +75,7 @@ export interface DiagnoseData {
   }
 }
 
-// ── /explain ─────────────────────────────────────────────────────
+// /explain
 export interface ExplainData {
   summary_line: string
   explanation: string

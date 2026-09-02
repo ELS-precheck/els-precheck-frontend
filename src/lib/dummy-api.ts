@@ -1,10 +1,6 @@
-/**
- * 더미 API — 백엔드 연결 전까지 사용.
- * 실제 연결 시 이 파일의 함수들을 fetch 호출로 교체.
- *
- * 단위 규칙: 이 파일 내부 계산은 % 스케일(0~100),
- * 반환 시 API 스펙(0~1 소수)으로 변환.
- */
+// 더미 API — 백엔드 연결 전까지 사용
+// 실제 연결 시 이 파일의 함수들을 fetch 호출로 교체
+// 내부 계산은 % 스케일(0~100), 반환 시 API 스펙(0~1 소수)으로 변환
 
 import type {
   ApiResponse,
@@ -16,7 +12,7 @@ import type {
   ExplainData,
 } from './types'
 
-// ── 프리셋 기본값 (내부, % 스케일) ──────────────────────────────────
+// 프리셋 기본값 (내부, % 스케일)
 interface PresetBase {
   id: string
   label: string
@@ -77,7 +73,6 @@ const PRESETS: PresetBase[] = [
   },
 ]
 
-// ── 내부 계산 헬퍼 ───────────────────────────────────────────────────
 function clamp(v: number, min: number, max: number) {
   return Math.max(min, Math.min(max, v))
 }
@@ -92,7 +87,7 @@ function gradeFromLoss(loss: number): string {
   return '고위험'
 }
 
-/** els_terms에서 가장 가까운 프리셋 반환 */
+// els_terms에서 가장 가까운 프리셋 반환
 function matchPreset(terms: ElsTerms): PresetBase {
   return (
     PRESETS.find(p => Math.abs(p.els_terms.coupon_annual - terms.coupon_annual) < 0.015) ??
@@ -100,7 +95,7 @@ function matchPreset(terms: ElsTerms): PresetBase {
   )
 }
 
-/** volatility_scale(k)을 적용한 수치 계산. README 의사코드 기반. */
+// volatility_scale(k)을 적용한 수치 계산 (README 의사코드 기반)
 function compute(p: PresetBase, k: number) {
   const loss  = round1(clamp(p.loss * k, 0.2, 78))
   const exp   = round1(Math.min(p.exp - (loss - p.loss) * 0.42, p.coupon * 0.92))
@@ -110,7 +105,7 @@ function compute(p: PresetBase, k: number) {
   return { loss, exp, cvar, early, mat }
 }
 
-/** 히스토그램 분포 (6구간 → bins/counts) */
+// 히스토그램 분포 (6구간 → bins/counts)
 function buildDistribution(loss: number, early: number, mat: number) {
   const N = 100_000
   const raw = [
@@ -128,7 +123,7 @@ function buildDistribution(loss: number, early: number, mat: number) {
   }
 }
 
-/** 조기상환 시점별 확률 */
+// 조기상환 시점별 확률
 function buildEarlyByStep(early: number, mat: number) {
   const weights = [0.56, 0.20, 0.11, 0.08, 0.05]
   const steps = [6, 12, 18, 24, 30].map((month, i) => ({
@@ -139,9 +134,11 @@ function buildEarlyByStep(early: number, mat: number) {
   return steps
 }
 
-// ── 더미 API 함수 ────────────────────────────────────────────────────
+function delay(ms: number) {
+  return new Promise(resolve => setTimeout(resolve, ms))
+}
 
-/** GET /api/presets */
+// GET /api/presets
 export async function fetchPresets(): Promise<ApiResponse<PresetsData>> {
   await delay(80)
   return {
@@ -158,7 +155,7 @@ export async function fetchPresets(): Promise<ApiResponse<PresetsData>> {
   }
 }
 
-/** POST /api/extract */
+// POST /api/extract
 export async function fetchExtract(_file: File): Promise<ApiResponse<ExtractData>> {
   await delay(3000)
   return {
@@ -177,7 +174,7 @@ export async function fetchExtract(_file: File): Promise<ApiResponse<ExtractData
   }
 }
 
-/** POST /api/diagnose */
+// POST /api/diagnose
 export async function fetchDiagnose(
   els_terms: ElsTerms,
   overrides?: { volatility_scale?: number },
@@ -217,7 +214,7 @@ export async function fetchDiagnose(
   }
 }
 
-/** POST /api/explain */
+// POST /api/explain
 export async function fetchExplain(
   els_terms: ElsTerms,
   diagnosis: DiagnoseData,
@@ -263,9 +260,4 @@ export async function fetchExplain(
       disclaimer: '본 해설은 투자권유가 아니라 정보 제공입니다. 위 해설의 모든 수치는 시뮬레이션 엔진이 확정한 값이며, AI는 해설만 담당합니다.',
     },
   }
-}
-
-// ── 내부 유틸 ────────────────────────────────────────────────────────
-function delay(ms: number) {
-  return new Promise(resolve => setTimeout(resolve, ms))
 }
