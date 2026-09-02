@@ -1,0 +1,481 @@
+/* 페이지 레이아웃 */
+.page {
+  padding: 60px 0 90px;
+}
+
+.pageHeader {
+  margin-bottom: 32px;
+}
+
+.pageOverline {
+  display: block;
+  font-size: 12.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--faint);
+  margin-bottom: 12px;
+}
+
+.pageTitle {
+  font-size: 38px;
+  font-weight: 650;
+  letter-spacing: -0.032em;
+  line-height: 1.14;
+  color: var(--ink);
+  margin-bottom: 10px;
+}
+
+.pageSub {
+  font-size: 15px;
+  color: var(--mid);
+  line-height: 1.6;
+}
+
+/* 탭 */
+.tabs {
+  display: inline-flex;
+  padding: 3px;
+  background: var(--surface-1);
+  border-radius: var(--radius-tab-container);
+  gap: 2px;
+  margin-bottom: 28px;
+}
+
+.tabItem {
+  padding: 8px 16px;
+  border-radius: var(--radius-tab-item);
+  font-size: 13.5px;
+  color: var(--muted);
+  transition: background 140ms ease;
+}
+
+.tabItem:hover:not(.tabActive) {
+  background: var(--surface-3);
+}
+
+.tabActive {
+  background: #fff;
+  color: var(--ink);
+  box-shadow: var(--shadow-tab);
+}
+
+/* 공통 primary 버튼 */
+.btnPrimary {
+  width: 100%;
+  padding: 12px;
+  background: var(--ink);
+  color: #fff;
+  font-size: 14px;
+  border-radius: var(--radius-btn);
+  transition: background 140ms ease;
+}
+
+.btnPrimary:hover {
+  background: var(--ink-hover);
+}
+
+.btnPrimary:disabled {
+  background: var(--track);
+  color: var(--placeholder);
+  cursor: not-allowed;
+}
+
+/* 프리셋 그리드 */
+.presetGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.presetCard {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  padding: 24px 24px 22px;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  transition: border-color 160ms ease, transform 160ms ease;
+}
+
+.presetCard:hover {
+  border-color: var(--ink);
+  transform: translateY(-2px);
+}
+
+.presetCardSelected {
+  border-color: var(--ink);
+}
+
+.presetCardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.gradeBadge {
+  padding: 4px 9px;
+  border-radius: var(--radius-pill);
+  font-size: 12px;
+}
+
+.gradeBadgeNormal {
+  background: var(--surface-1);
+  color: var(--mid);
+}
+
+.gradeBadgeHigh {
+  background: var(--warn-bg);
+  color: var(--warn-ink);
+}
+
+.presetMaturity {
+  font-size: 12px;
+  color: var(--faint);
+}
+
+.presetName {
+  font-size: 17px;
+  font-weight: 400;
+  color: var(--ink);
+  letter-spacing: -0.012em;
+  line-height: 1.35;
+  margin-bottom: 4px;
+}
+
+.presetOneLine {
+  font-size: 13px;
+  color: var(--faint);
+  line-height: 1.5;
+  margin-bottom: 16px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  min-height: calc(13px * 1.5 * 2);
+}
+
+.presetCouponWrap {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-top: auto;
+  margin-bottom: 16px;
+}
+
+.presetCoupon {
+  font-size: 30px;
+  font-variant-numeric: tabular-nums;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  color: var(--ink);
+}
+
+.presetCouponSuffix {
+  font-size: 16px;
+  margin-left: 3px;
+}
+
+.presetCouponLabel {
+  font-size: 12px;
+  color: var(--sub);
+}
+
+.presetTerms {
+  border-top: 1px solid var(--line);
+  padding-top: 14px;
+  margin-bottom: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.presetTermRow {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.presetTermLabel {
+  font-size: 11px;
+  color: var(--faint);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.presetTermValue {
+  font-size: 13px;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+  word-break: break-word;
+}
+
+/* PDF 업로드 탭 */
+.uploadGrid {
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  gap: 20px;
+  align-items: start;
+}
+
+.uploadZone {
+  border: 1px dashed #CBD0D6;
+  border-radius: var(--radius-card);
+  padding: 44px 16px;
+  background: var(--surface-3);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 12px;
+  transition: border-color 140ms ease, background 140ms ease;
+}
+
+.uploadZoneDragging {
+  border-color: var(--ink);
+  background: var(--surface-1);
+}
+
+.uploadTitle {
+  font-size: 19px;
+  font-weight: 600;
+  color: var(--ink);
+  letter-spacing: -0.012em;
+}
+
+.uploadDesc {
+  font-size: 13.5px;
+  color: var(--mid);
+  line-height: 1.6;
+}
+
+.uploadLoading {
+  font-size: 14px;
+  color: var(--mid);
+}
+
+.btnUpload {
+  padding: 10px 20px;
+  border: 1px solid var(--line-dark);
+  border-radius: var(--radius-btn);
+  font-size: 14px;
+  color: var(--ink);
+  transition: background 140ms ease, color 140ms ease, border-color 140ms ease;
+}
+
+.btnUpload:hover {
+  background: var(--ink);
+  color: #fff;
+  border-color: var(--ink);
+}
+
+.extractWarnings {
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.extractWarning {
+  font-size: 12.5px;
+  color: var(--warn-ink);
+  padding: 8px 12px;
+  background: var(--warn-bg);
+  border-radius: var(--radius-badge);
+  line-height: 1.5;
+}
+
+/* 추출 결과 패널 */
+.extractPanel {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  overflow: hidden;
+}
+
+.extractPanelHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 22px;
+  border-bottom: 1px solid var(--line);
+}
+
+.extractPanelTitle {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ink);
+}
+
+.extractStatusTag {
+  font-size: 12px;
+  color: var(--faint);
+}
+
+.extractStatusTagDone {
+  color: var(--warn-ink);
+}
+
+.extractRow {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 16px;
+  padding: 10px 22px;
+  border-bottom: 1px solid var(--surface-1);
+  align-items: center;
+}
+
+.extractRowLabel {
+  font-size: 13px;
+  color: var(--sub);
+}
+
+.extractRowInput {
+  width: 100%;
+  padding: 7px 10px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-input);
+  font-size: 13.5px;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+  font-family: var(--font-sans);
+  background: #fff;
+}
+
+.extractRowInput:focus-visible {
+  outline: 1px solid var(--ink);
+  outline-offset: 2px;
+}
+
+.extractRowInput:disabled {
+  background: var(--surface-3);
+  color: var(--placeholder);
+}
+
+.extractPanelFooter {
+  padding: 16px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.extractFooterNote {
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+/* 에러 메시지 */
+.errorMsg {
+  font-size: 13px;
+  color: var(--warn-ink);
+  background: var(--warn-bg);
+  border-radius: var(--radius-badge);
+  padding: 8px 12px;
+  line-height: 1.5;
+}
+
+/* 직접 입력 탭 */
+.directPanel {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.directGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+
+.fieldGroup {
+  display: flex;
+  flex-direction: column;
+}
+
+.fieldLabel {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 6px;
+}
+
+.fieldInput {
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-input);
+  font-size: 13.5px;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+  font-family: var(--font-sans);
+}
+
+.fieldInput:focus-visible {
+  outline: 1px solid var(--ink);
+  outline-offset: 2px;
+}
+
+/* 사용자 정보 */
+.profileSection {
+  margin-top: 40px;
+  border-top: 1px solid var(--line);
+  padding-top: 34px;
+}
+
+.profileHeader {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  margin-bottom: 24px;
+}
+
+.profileNote {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.profileGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 0.9fr;
+  gap: 32px;
+}
+
+.profileGroupLabel {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 10px;
+}
+
+.chipGroup {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.chip {
+  padding: 9px 14px;
+  border-radius: var(--radius-pill);
+  font-size: 13px;
+  border: 1px solid var(--line);
+  color: var(--mid);
+  transition: all 140ms ease;
+}
+
+.chip:hover {
+  border-color: var(--line-dark);
+}
+
+.chipActive {
+  background: var(--ink);
+  color: #fff;
+  border-color: var(--ink);
+}
+
+.amountNote {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 8px;
+  line-height: 1.5;
+}
