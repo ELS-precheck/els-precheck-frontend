@@ -226,7 +226,8 @@ export async function fetchExplain(
   const exp    = (diagnosis.expected_return * 100).toFixed(1)
   const coupon = (els_terms.coupon_annual * 100).toFixed(1)
   const cvar   = Math.abs(diagnosis.cvar_95 * 100).toFixed(0)
-  const ki     = els_terms.knock_in ? `${(els_terms.knock_in * 100).toFixed(0)}%` : '없음'
+  const hasKnockIn = els_terms.knock_in !== null && els_terms.knock_in !== 0
+  const ki = hasKnockIn ? `${(els_terms.knock_in! * 100).toFixed(0)}%` : null
 
   const riskSentence = (() => {
     if (user_profile?.risk_appetite === 'conservative')
@@ -249,8 +250,8 @@ export async function fetchExplain(
     data: {
       summary_line: `이 상품은 원금손실 확률이 약 ${loss}%로 계산됐습니다.`,
       explanation: [
-        `이 상품은 원금손실 확률이 ${loss}%로 계산됐습니다. 반대로 말하면 ${(100 - parseFloat(loss)).toFixed(1)}%의 경로에서는 약속된 쿠폰을 받고 끝납니다. 문제는 손실이 나는 쪽의 크기입니다 — 손실 경로 중 나쁜 5%의 평균 손실률이 ${cvar}%로, 원금의 절반 가까이가 사라지는 결말이 실제로 존재합니다.`,
-        `광고에 적힌 연 ${coupon}%는 조건이 지켜질 때만 받는 최대 수익입니다. 손실 시나리오를 포함하면 확률가중 기대수익은 연 ${exp}%로 내려갑니다. 낙인선 ${ki}는 기초자산이 그 수준까지 떨어지면 원금 보호 장치가 사라진다는 뜻이며, 한 번 닿으면 되돌릴 수 없습니다.`,
+        `이 상품은 원금손실 확률이 ${loss}%로 계산됐습니다. 반대로 말하면 ${(100 - parseFloat(loss)).toFixed(1)}%의 경로에서는 약속된 쿠폰을 받고 끝납니다. 문제는 손실이 나는 쪽의 크기입니다 — 전체 경로 하위 5%의 평균 손익률이 ${cvar}%로, 이 구간에서는 원금 손실이 크게 발생합니다.`,
+        `광고에 적힌 연 ${coupon}%는 조건이 지켜질 때만 받는 최대 수익입니다. 손실 시나리오를 포함하면 확률가중 기대수익은 연 ${exp}%로 내려갑니다.${ki ? ` 낙인선 ${ki}는 기초자산이 그 수준까지 떨어지면 원금 보호 장치가 사라진다는 뜻이며, 한 번 닿으면 되돌릴 수 없습니다.` : ' 이 상품은 낙인 조건이 없어 만기 시 배리어 조건만 충족하면 원금이 보호됩니다.'}`,
         `${riskSentence} ${ageSentence} 기초자산 두 개 중 더 약한 쪽이 손실을 결정하므로, 두 지수 중 하나라도 크게 빠질 가능성을 따로 확인하는 것이 좋습니다.`,
       ].join('\n\n'),
       cautions: [
