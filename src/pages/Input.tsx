@@ -162,9 +162,14 @@ export default function Input() {
   }
 
   const handleDirectDiagnose = () => {
+    const { underlyings, coupon, maturity } = directForm
+    if (!underlyings.trim() || !coupon.trim() || !maturity.trim()) {
+      setDirectError('기초자산, 쿠폰, 만기는 필수 항목입니다.')
+      return
+    }
     const terms = parseDirectForm(directForm)
     if (!terms) {
-      setDirectError('필드를 다시 확인해 주세요. 기초자산·쿠폰·만기는 필수입니다.')
+      setDirectError('숫자 형식을 확인해 주세요.')
       return
     }
     setDirectError(null)
@@ -172,9 +177,14 @@ export default function Input() {
   }
 
   const handleExtractDiagnose = () => {
+    const { underlyings, coupon, maturity } = extractForm
+    if (!underlyings.trim() || !coupon.trim() || !maturity.trim()) {
+      setExtractError('기초자산, 쿠폰, 만기는 필수 항목입니다.')
+      return
+    }
     const terms = parseExtractForm(extractForm, extractInterval)
     if (!terms) {
-      setExtractError('필드를 다시 확인해 주세요. 기초자산·쿠폰·만기는 필수입니다.')
+      setExtractError('숫자 형식을 확인해 주세요.')
       return
     }
     setExtractError(null)
