@@ -29,7 +29,7 @@ const PRESETS: PresetBase[] = [
   {
     id: 'low',
     label: '저위험',
-    one_line: '선진지수 2개 · 낙인 없는 완만한 스텝다운',
+    one_line: '선진지수 2개, 낙인 없는 완만한 스텝다운',
     loss: 2.4, exp: 4.1, cvar: -19, early: 88, coupon: 5.2,
     els_terms: {
       underlyings: ['S&P500', 'EuroStoxx50'],
@@ -59,7 +59,7 @@ const PRESETS: PresetBase[] = [
   {
     id: 'high',
     label: '고위험 (2021 H지수 재현)',
-    one_line: '홍콩 H지수 ELS 재현 · 낙인 45%',
+    one_line: '홍콩 H지수 ELS 재현, 낙인 45%',
     loss: 24.8, exp: 6.9, cvar: -54, early: 58, coupon: 12.4,
     els_terms: {
       underlyings: ['홍콩 H지수', 'KOSPI200'],
