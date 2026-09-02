@@ -1,0 +1,337 @@
+/* 스크롤 리빌 */
+:global([data-reveal]) {
+  opacity: 0;
+  transform: translateY(26px) scale(0.982);
+  transition:
+    opacity 900ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 1000ms cubic-bezier(0.2, 1.16, 0.32, 1);
+}
+
+:global([data-reveal].revealed) {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :global([data-reveal]) {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* 공통 */
+.overline {
+  font-size: 11px;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+
+/* 히어로 */
+.hero {
+  min-height: 75vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 96px 0 80px;
+}
+
+
+.heroGrid {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 72px;
+  align-items: stretch;
+}
+
+.heroBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 5px 11px 5px 8px;
+  border: 1px solid var(--warn-border);
+  background: var(--warn-bg-2);
+  border-radius: var(--radius-pill);
+  font-size: 12px;
+  color: var(--warn-ink);
+  margin-bottom: 24px;
+}
+
+.heroBadgeDot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--warn);
+  flex-shrink: 0;
+}
+
+.heroH1 {
+  font-size: clamp(36px, 3.6vw, 48px);
+  font-weight: 650;
+  letter-spacing: -0.022em;
+  line-height: 1.24;
+  color: var(--ink);
+  margin-bottom: 20px;
+  white-space: nowrap;
+}
+
+.heroH1 em {
+  font-style: normal;
+  font-weight: 750;
+}
+
+.heroLead {
+  font-size: 17.5px;
+  color: var(--mid);
+  line-height: 1.62;
+  max-width: 30em;
+  text-wrap: pretty;
+  margin-bottom: 32px;
+}
+
+.heroButtons {
+  display: flex;
+  gap: 12px;
+}
+
+.btnPrimary {
+  padding: 14px 24px;
+  background: var(--ink);
+  color: #fff;
+  font-size: 15px;
+  border-radius: var(--radius-btn);
+}
+
+.btnPrimary:hover {
+  background: var(--ink-hover);
+  transform: translateY(-1px);
+}
+
+.btnSecondary {
+  padding: 14px 22px;
+  background: #fff;
+  border: 1px solid var(--line-dark);
+  font-size: 15px;
+  border-radius: var(--radius-btn);
+  color: var(--ink);
+}
+
+.btnSecondary:hover {
+  border-color: var(--ink);
+}
+
+/* 샘플 리포트 카드 */
+.sampleCard {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-panel);
+  padding: 30px 30px 26px;
+  background: var(--surface-3);
+}
+
+.sampleCardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.sampleCardSub {
+  font-size: 13px;
+  color: var(--mid);
+  margin-bottom: 20px;
+}
+
+.sampleLoss {
+  font-size: 76px;
+  font-variant-numeric: tabular-nums;
+  font-weight: 400;
+  letter-spacing: -0.028em;
+  line-height: 0.86;
+  color: var(--warn);
+}
+
+.sampleLossSuffix {
+  font-size: 32px;
+}
+
+.sampleLossLabel {
+  font-size: 13px;
+  color: var(--sub);
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+
+.stackBar {
+  height: 6px;
+  border-radius: var(--radius-pill);
+  background: var(--track);
+  display: flex;
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+
+.stackBarEarly {
+  background: var(--ink);
+}
+
+.stackBarMat {
+  background: var(--placeholder);
+}
+
+.stackBarLoss {
+  background: var(--warn);
+}
+
+.sampleLabels {
+  display: flex;
+  justify-content: space-between;
+}
+
+.sampleLabel {
+  font-size: 11.5px;
+  font-variant-numeric: tabular-nums;
+  color: var(--sub);
+}
+
+/* 맥락 배너 */
+.contextBanner {
+  padding: 68px 0;
+}
+
+.contextLead {
+  font-size: 25px;
+  font-weight: 500;
+  letter-spacing: -0.022em;
+  line-height: 1.5;
+  color: var(--ink);
+  margin-bottom: 32px;
+}
+
+.contextLead strong {
+  font-weight: 700;
+}
+
+.contextStats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+  border-top: 1px solid var(--line);
+  padding-top: 32px;
+  margin-bottom: 22px;
+}
+
+.contextStatLeft {
+  border-right: 1px solid var(--line);
+  padding-right: 28px;
+}
+
+.contextStatNum {
+  font-size: 46px;
+  font-variant-numeric: tabular-nums;
+  font-weight: 400;
+  letter-spacing: -0.024em;
+  line-height: 1;
+  color: var(--ink);
+  margin: 8px 0 4px;
+}
+
+.contextStatNumSuffix {
+  font-size: 20px;
+}
+
+.contextStatLabel {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+.contextStatTag {
+  font-size: 13px;
+  color: var(--sub);
+  margin-bottom: 10px;
+}
+
+.contextStatDesc {
+  font-size: 14px;
+  color: var(--mid);
+  line-height: 1.6;
+}
+
+.contextClosing {
+  border-top: 1px solid var(--line);
+  padding-top: 22px;
+  font-size: 20px;
+  font-weight: 500;
+  letter-spacing: -0.018em;
+  color: var(--ink);
+}
+
+.contextClosingWarn {
+  font-weight: 700;
+  color: var(--warn);
+}
+
+/* 3단계 */
+.steps {
+  padding: 78px 0 60px;
+}
+
+.stepsTitle {
+  font-size: 28px;
+  font-weight: 650;
+  letter-spacing: -0.022em;
+  color: var(--ink);
+  margin-bottom: 28px;
+}
+
+.stepsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--line-dark);
+  border: 1px solid var(--line-dark);
+  border-radius: var(--radius-section);
+  overflow: hidden;
+}
+
+.stepCell {
+  background: #fff;
+  padding: 30px 28px 34px;
+}
+
+.stepNum {
+  font-size: 36px;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  color: var(--ink);
+  margin-bottom: 16px;
+}
+
+.stepTitle {
+  font-size: 16.5px;
+  font-weight: 500;
+  color: var(--ink);
+  margin-bottom: 10px;
+}
+
+.stepDesc {
+  font-size: 14px;
+  color: var(--sub);
+  line-height: 1.6;
+}
+
+.disclaimer {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-disclaimer);
+  padding: 18px 22px;
+  background: var(--surface-3);
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.6;
+  margin-top: 40px;
+}
