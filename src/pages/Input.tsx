@@ -258,7 +258,7 @@ export default function Input() {
                     className={styles.btnPrimary}
                     onClick={e => { e.stopPropagation(); toDiagnose(preset.els_terms) }}
                   >
-                    이 상품 진단하기
+                    진단하기
                   </button>
                 </div>
               )
@@ -338,7 +338,7 @@ export default function Input() {
                   disabled={extractStatus !== 'done'}
                   onClick={handleExtractDiagnose}
                 >
-                  이 조건으로 진단하기
+                  진단하기
                 </button>
               </div>
             </div>
@@ -366,7 +366,7 @@ export default function Input() {
             </div>
             {directError && <p className={styles.errorMsg}>{directError}</p>}
             <button className={styles.btnPrimary} onClick={handleDirectDiagnose}>
-              이 조건으로 진단하기
+              진단하기
             </button>
           </div>
         )}
