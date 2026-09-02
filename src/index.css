@@ -1,111 +1,114 @@
+/* ── Fonts ─────────────────────────────────────────── */
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css');
+
+/* ── Design Tokens ─────────────────────────────────── */
 :root {
-  --text: #6b6375;
-  --text-h: #08060d;
-  --bg: #fff;
-  --border: #e5e4e7;
-  --code-bg: #f4f3ec;
-  --accent: #aa3bff;
-  --accent-bg: rgba(170, 59, 255, 0.1);
-  --accent-border: rgba(170, 59, 255, 0.5);
-  --social-bg: rgba(244, 243, 236, 0.5);
-  --shadow:
-    rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
+  /* Color */
+  --ink: #1A1A1A;
+  --ink-hover: #333333;
+  --body: #2F3337;
+  --mid: #4A4A4A;
+  --sub: #5A6068;
+  --muted: #6B7280;
+  --faint: #8B9096;
+  --placeholder: #A8ADB5;
+  --line-dark: #D7DAE0;
+  --line: #E5E7EB;
+  --track: #EEF0F3;
+  --surface-1: #F1F3F6;
+  --surface-2: #F7F8FA;
+  --surface-3: #FBFCFD;
+  --warn: #DC2626;
+  --warn-ink: #B91C1C;
+  --warn-soft: #F0A9A6;
+  --warn-bg: #FEF2F2;
+  --warn-bg-2: #FEF5F5;
+  --warn-border: #FBD5D5;
+  --white: #FFFFFF;
 
-  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --mono: ui-monospace, Consolas, monospace;
+  /* Typography */
+  --font-sans: 'Pretendard', 'Inter', system-ui, sans-serif;
 
-  font: 18px/145% var(--sans);
-  letter-spacing: 0.18px;
-  color-scheme: light dark;
-  color: var(--text);
-  background: var(--bg);
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  /* Layout */
+  --max-width: 1180px;
+  --page-padding: 40px;
+  --header-height: 64px;
 
-  @media (max-width: 1024px) {
-    font-size: 16px;
-  }
+  /* Border radius */
+  --radius-pill: 999px;
+  --radius-panel: 14px;
+  --radius-card: 13px;
+  --radius-section: 12px;
+  --radius-disclaimer: 10px;
+  --radius-tab-container: 9px;
+  --radius-btn: 8px;
+  --radius-tab-item: 7px;
+  --radius-input: 7px;
+  --radius-bar: 6px;
+  --radius-badge: 4px;
+  --radius-chart-bar: 4px 4px 0 0;
+
+  /* Shadows */
+  --shadow-tab: 0 1px 2px rgba(0, 0, 0, 0.08);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --text: #9ca3af;
-    --text-h: #f3f4f6;
-    --bg: #16171d;
-    --border: #2e303a;
-    --code-bg: #1f2028;
-    --accent: #c084fc;
-    --accent-bg: rgba(192, 132, 252, 0.15);
-    --accent-border: rgba(192, 132, 252, 0.5);
-    --social-bg: rgba(47, 48, 58, 0.5);
-    --shadow:
-      rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
-  }
-
-  #social .button-icon {
-    filter: invert(1) brightness(2);
-  }
-}
-
-#root {
-  width: 1126px;
-  max-width: 100%;
-  margin: 0 auto;
-  text-align: center;
-  border-inline: 1px solid var(--border);
-  min-height: 100svh;
-  display: flex;
-  flex-direction: column;
+/* ── Base ──────────────────────────────────────────── */
+*, *::before, *::after {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-family: var(--font-sans);
+  color: var(--ink);
+  background: var(--white);
+  -webkit-font-smoothing: antialiased;
 }
 
 body {
-  margin: 0;
+  min-height: 100vh;
 }
 
-h1,
-h2 {
-  font-family: var(--heading);
-  font-weight: 500;
-  color: var(--text-h);
+a {
+  color: var(--ink);
+  text-decoration: none;
 }
 
-h1 {
-  font-size: 56px;
-  letter-spacing: -1.68px;
-  margin: 32px 0;
-  @media (max-width: 1024px) {
-    font-size: 36px;
-    margin: 20px 0;
-  }
-}
-h2 {
-  font-size: 24px;
-  line-height: 118%;
-  letter-spacing: -0.24px;
-  margin: 0 0 8px;
-  @media (max-width: 1024px) {
-    font-size: 20px;
-  }
-}
-p {
-  margin: 0;
+a:hover {
+  color: var(--warn);
 }
 
-code,
-.counter {
-  font-family: var(--mono);
-  display: inline-flex;
-  border-radius: 4px;
-  color: var(--text-h);
+button {
+  cursor: pointer;
+  font-family: var(--font-sans);
+  transition: all 140ms ease;
+  border: none;
+  background: none;
 }
 
-code {
-  font-size: 15px;
-  line-height: 135%;
-  padding: 4px 8px;
-  background: var(--code-bg);
+input {
+  font-family: var(--font-sans);
+}
+
+input::placeholder {
+  color: var(--placeholder);
+  opacity: 1;
+}
+
+input:focus-visible {
+  outline: 1px solid var(--ink);
+  outline-offset: 2px;
+}
+
+::selection {
+  background: var(--ink);
+  color: var(--white);
+}
+
+/* ── Layout ────────────────────────────────────────── */
+.container {
+  max-width: var(--max-width);
+  padding: 0 var(--page-padding);
+  margin: 0 auto;
 }
