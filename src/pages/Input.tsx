@@ -70,6 +70,8 @@ function parseExtractForm(form: ExtractForm, interval: number): ElsTerms | null 
     const step_down_barriers = form.barriers.split('/').map(s => parseFloat(s.trim()) / 100)
     const knock_in           = form.knockIn.trim() === '' ? null : parseFloat(form.knockIn) / 100
     if (!underlyings.length || isNaN(coupon_annual) || isNaN(maturity_months)) return null
+    if (!step_down_barriers.length || step_down_barriers.some(isNaN)) return null
+    if (knock_in !== null && isNaN(knock_in)) return null
     return { underlyings, coupon_annual, maturity_months, check_interval_months: interval, step_down_barriers, knock_in }
   } catch {
     return null
@@ -85,6 +87,8 @@ function parseDirectForm(form: DirectForm): ElsTerms | null {
     const step_down_barriers    = form.barriers.split(',').map(s => parseFloat(s.trim()) / 100)
     const knock_in              = form.knockIn.trim() === '' ? null : parseFloat(form.knockIn) / 100
     if (!underlyings.length || isNaN(coupon_annual) || isNaN(maturity_months)) return null
+    if (!step_down_barriers.length || step_down_barriers.some(isNaN)) return null
+    if (knock_in !== null && isNaN(knock_in)) return null
     return { underlyings, coupon_annual, maturity_months, check_interval_months, step_down_barriers, knock_in }
   } catch {
     return null
@@ -150,7 +154,7 @@ export default function Input() {
 
   const toDiagnose = (elsTerms: ElsTerms) => {
     const userProfile: UserProfile = { age_band: ageBand, risk_appetite: riskAppetite }
-    const raw       = parseFloat(amount.replace(/,/g, ''))
+    const raw       = parseFloat(amount)
     const principal = amount.trim() && !isNaN(raw) ? Math.round(raw * 10000) : undefined
     navigate('/result', {
       state: { elsTerms: principal ? { ...elsTerms, principal } : elsTerms, userProfile },
@@ -409,6 +413,8 @@ export default function Input() {
             <div>
               <p className={styles.profileGroupLabel}>투자 금액 (만원)</p>
               <input
+                type="number"
+                min="0"
                 className={styles.fieldInput}
                 value={amount}
                 placeholder="1000"

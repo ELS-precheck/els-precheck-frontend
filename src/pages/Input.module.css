@@ -208,7 +208,7 @@
   font-size: 13px;
   color: var(--ink);
   font-variant-numeric: tabular-nums;
-  word-break: break-word;
+  overflow-wrap: break-word;
 }
 
 /* PDF 업로드 탭 */
