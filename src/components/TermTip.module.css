@@ -1,0 +1,51 @@
+.wrap {
+  position: relative;
+  display: inline;
+}
+
+.term {
+  border-bottom: 1px dashed var(--placeholder);
+  cursor: help;
+  transition: color 150ms ease, border-color 150ms ease;
+  color: inherit;
+}
+
+.wrap:hover .term {
+  color: var(--ink) !important;
+  border-bottom-color: var(--ink);
+}
+
+.popup {
+  display: none;
+  position: absolute;
+  bottom: calc(100% + 7px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--ink);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.55;
+  padding: 8px 12px;
+  border-radius: 6px;
+  width: max-content;
+  max-width: 220px;
+  white-space: normal;
+  z-index: 100;
+  pointer-events: none;
+}
+
+.popup::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 5px solid transparent;
+  border-top-color: var(--ink);
+}
+
+.wrap:hover .popup,
+.wrap:focus-within .popup {
+  display: block;
+}

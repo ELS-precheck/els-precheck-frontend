@@ -1,0 +1,441 @@
+/* 페이지 */
+.page {
+  padding: 60px 0 100px;
+}
+
+.pageOverline {
+  display: block;
+  font-size: 12.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--faint);
+  margin-bottom: 16px;
+}
+
+/* 헤더 */
+.pageHeader {
+  margin-bottom: 40px;
+}
+
+.headerGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  align-items: start;
+}
+
+.gradeBadge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+  font-size: 12px;
+  margin-bottom: 12px;
+}
+
+.gradeBadgeLow {
+  background: var(--surface-1);
+  color: var(--mid);
+}
+
+.gradeBadgeMid {
+  background: #FFF7ED;
+  color: #C2410C;
+}
+
+.gradeBadgeHigh {
+  background: var(--warn-bg);
+  color: var(--warn-ink);
+}
+
+.lossBig {
+  font-size: 80px;
+  font-variant-numeric: tabular-nums;
+  font-weight: 400;
+  letter-spacing: -0.03em;
+  line-height: 0.9;
+  color: var(--ink);
+  margin-bottom: 10px;
+}
+
+.lossPlaceholder {
+  color: var(--track);
+}
+
+.lossSuffix {
+  font-size: 36px;
+}
+
+.lossLabel {
+  font-size: 14px;
+  color: var(--sub);
+  margin-bottom: 12px;
+}
+
+.condSummary {
+  font-size: 13px;
+  color: var(--faint);
+}
+
+/* 변동성 */
+.volatilityBox {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  padding: 24px;
+  background: var(--surface-3);
+}
+
+.volatilityLabel {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 12px;
+}
+
+.volatilityBtns {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.volatilityBtn {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-btn);
+  font-size: 13.5px;
+  color: var(--mid);
+  background: #fff;
+  transition: all 140ms ease;
+}
+
+.volatilityBtn:hover:not(:disabled) {
+  border-color: var(--line-dark);
+}
+
+.volatilityBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.volatilityBtnActive {
+  background: var(--ink);
+  color: #fff;
+  border-color: var(--ink);
+}
+
+.volatilityNote {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+/* 핵심 수치 카드 */
+.metricsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 40px;
+}
+
+.metricCard {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  padding: 22px 24px 20px;
+}
+
+.metricLabel {
+  font-size: 12.5px;
+  color: var(--mid);
+  margin-bottom: 8px;
+}
+
+.metricValue {
+  font-size: 36px;
+  font-variant-numeric: tabular-nums;
+  font-weight: 400;
+  letter-spacing: -0.024em;
+  line-height: 1;
+  color: var(--ink);
+  margin-bottom: 8px;
+}
+
+.metricValueWarn {
+  color: var(--warn-ink);
+}
+
+.metricUnit {
+  font-size: 18px;
+  margin-left: 2px;
+}
+
+.metricNote {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+/* 섹션 공통 */
+.section {
+  margin-bottom: 40px;
+  padding-bottom: 40px;
+  border-bottom: 1px solid var(--line);
+}
+
+.sectionTitle {
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -0.014em;
+  color: var(--ink);
+  margin-bottom: 6px;
+}
+
+.sectionDesc {
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 20px;
+}
+
+/* 쿠폰 vs 기대수익 */
+.couponCompare {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.couponRow {
+  display: grid;
+  grid-template-columns: 120px 1fr 56px;
+  align-items: center;
+  gap: 12px;
+}
+
+.couponRowLabel {
+  font-size: 13px;
+  color: var(--sub);
+}
+
+.couponTrack {
+  height: 10px;
+  background: var(--track);
+  border-radius: var(--radius-pill);
+  overflow: hidden;
+}
+
+.couponFill {
+  height: 100%;
+  background: var(--ink);
+  border-radius: var(--radius-pill);
+  transition: width 400ms ease;
+}
+
+.couponFillExpected {
+  background: var(--placeholder);
+}
+
+.couponVal {
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+  text-align: right;
+}
+
+/* 차트 */
+.chartWrap {
+  margin-top: 4px;
+}
+
+.chartLoading {
+  height: 200px;
+  background: var(--surface-1);
+  border-radius: var(--radius-card);
+  animation: pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+/* 세 결말 */
+.outcomeBar {
+  height: 12px;
+  border-radius: var(--radius-pill);
+  display: flex;
+  overflow: hidden;
+  margin-bottom: 14px;
+}
+
+.outcomeEarly {
+  background: var(--ink);
+  transition: width 400ms ease;
+}
+
+.outcomeMat {
+  background: var(--placeholder);
+  transition: width 400ms ease;
+}
+
+.outcomeLoss {
+  background: #F0A9A6;
+  transition: width 400ms ease;
+}
+
+.outcomeLabels {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 12px;
+}
+
+.outcomeLabel {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+  color: var(--sub);
+}
+
+.outcomeDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.outcomeDotEarly { background: var(--ink); }
+.outcomeDotMat   { background: var(--placeholder); }
+.outcomeDotLoss  { background: #F0A9A6; }
+
+.outcomeSkeleton {
+  height: 12px;
+  border-radius: var(--radius-pill);
+  background: var(--surface-1);
+  animation: pulse 1.4s ease-in-out infinite;
+}
+
+.principalNote {
+  font-size: 13px;
+  color: var(--muted);
+  margin-top: 4px;
+}
+
+/* AI 해설 */
+.explainSection {
+  margin-bottom: 40px;
+}
+
+.explainOverline {
+  font-size: 12.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--faint);
+  margin-bottom: 20px;
+}
+
+.explainLoading {
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.explainSummary {
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: -0.016em;
+  line-height: 1.5;
+  color: var(--ink);
+  margin-bottom: 20px;
+}
+
+.explainPara {
+  font-size: 15px;
+  color: var(--body);
+  line-height: 1.75;
+  margin-bottom: 16px;
+}
+
+.cautions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.caution {
+  font-size: 13px;
+  color: var(--warn-ink);
+  background: var(--warn-bg);
+  border-radius: var(--radius-badge);
+  padding: 10px 14px;
+  line-height: 1.5;
+}
+
+.disclaimer {
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.6;
+  border-top: 1px solid var(--line);
+  padding-top: 16px;
+  margin-top: 4px;
+}
+
+/* 하단 */
+.footer {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+.btnPrimary {
+  padding: 13px 28px;
+  border: 1px solid var(--ink);
+  border-radius: var(--radius-btn);
+  font-size: 14px;
+  color: #fff;
+  background: var(--ink);
+  transition: background 140ms ease;
+}
+
+.btnPrimary:hover {
+  background: var(--ink-hover);
+}
+
+.btnSecondary {
+  padding: 13px 28px;
+  border: 1px solid var(--line-dark);
+  border-radius: var(--radius-btn);
+  font-size: 14px;
+  color: var(--ink);
+  background: #fff;
+  transition: border-color 140ms ease;
+}
+
+.btnSecondary:hover {
+  border-color: var(--ink);
+}
+
+@media print {
+  .page {
+    padding: 20px 0;
+  }
+
+  .volatilityBox,
+  .footer {
+    display: none;
+  }
+
+  .section {
+    break-inside: avoid;
+    border-bottom: 1px solid #e5e5e5;
+  }
+
+  .metricsGrid {
+    break-inside: avoid;
+  }
+
+  .explainSection {
+    break-inside: avoid;
+  }
+
+  * {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}
