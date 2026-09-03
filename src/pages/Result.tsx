@@ -52,7 +52,12 @@ export default function Result() {
     fetchDiagnose(st.elsTerms, { volatility_scale: VOLATILITY_SCALE[volatility] })
       .then(res => {
         if (res.ok) setDiagnosis(res.data)
-        else setDiagnoseError(res.error.message)
+        else {
+          setDiagnoseError(res.error.message)
+          setDiagnosis(null)
+          setExplain(null)
+          setExplainError(null)
+        }
       })
       .finally(() => setDiagnoseLoading(false))
   }, [volatility, location])
