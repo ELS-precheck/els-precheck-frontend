@@ -365,16 +365,6 @@
   line-height: 1.5;
 }
 
-/* 에러 메시지 */
-.errorMsg {
-  font-size: 13px;
-  color: var(--warn-ink);
-  background: var(--warn-bg);
-  border-radius: var(--radius-badge);
-  padding: 8px 12px;
-  line-height: 1.5;
-}
-
 /* 직접 입력 탭 */
 .directPanel {
   display: flex;

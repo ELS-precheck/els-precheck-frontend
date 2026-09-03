@@ -41,13 +41,32 @@ export default function Result() {
   const [explain,         setExplain]         = useState<ExplainData | null>(null)
   const [diagnoseLoading, setDiagnoseLoading] = useState(true)
   const [explainLoading,  setExplainLoading]  = useState(false)
+  const [diagnoseError,   setDiagnoseError]   = useState<string | null>(null)
+  const [explainError,    setExplainError]    = useState<string | null>(null)
 
   useEffect(() => {
     const st = location.state as { elsTerms: ElsTerms; userProfile: UserProfile } | null
     if (!st) return
     setDiagnoseLoading(true)
+    setDiagnoseError(null)
     fetchDiagnose(st.elsTerms, { volatility_scale: VOLATILITY_SCALE[volatility] })
-      .then(res => { if (res.ok) setDiagnosis(res.data) })
+      .then(res => {
+        if (res.ok) setDiagnosis(res.data)
+        else {
+          setDiagnoseError(res.error.message)
+          setDiagnosis(null)
+          setExplain(null)
+          setExplainError(null)
+          setExplainLoading(false)
+        }
+      })
+      .catch(() => {
+        setDiagnoseError('진단 중 오류가 발생했습니다. 다시 시도해 주세요.')
+        setDiagnosis(null)
+        setExplain(null)
+        setExplainError(null)
+        setExplainLoading(false)
+      })
       .finally(() => setDiagnoseLoading(false))
   }, [volatility, location])
 
@@ -57,8 +76,13 @@ export default function Result() {
     let cancelled = false
     setExplainLoading(true)
     setExplain(null)
+    setExplainError(null)
     fetchExplain(st.elsTerms, diagnosis, st.userProfile)
-      .then(res => { if (!cancelled && res.ok) setExplain(res.data) })
+      .then(res => {
+        if (!cancelled && res.ok) setExplain(res.data)
+        else if (!cancelled) setExplainError(res.error.message)
+      })
+      .catch(() => { if (!cancelled) setExplainError('해설 생성 중 오류가 발생했습니다.') })
       .finally(() => { if (!cancelled) setExplainLoading(false) })
     return () => { cancelled = true }
   }, [diagnosis, location])
@@ -140,6 +164,8 @@ export default function Result() {
             </div>
           </div>
         </div>
+
+        {diagnoseError && <p className="errorMsg">{diagnoseError}</p>}
 
         {/* 핵심 수치 카드 */}
         <div className={styles.metricsGrid}>
@@ -268,6 +294,8 @@ export default function Result() {
           <p className={styles.explainOverline}>AI 위험 해설</p>
           {explainLoading ? (
             <p className={styles.explainLoading}>Claude가 해설을 작성하는 중입니다...</p>
+          ) : explainError ? (
+            <p className="errorMsg">{explainError}</p>
           ) : explain ? (
             <>
               <p className={styles.explainSummary}>{explain.summary_line}</p>
