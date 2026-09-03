@@ -43,6 +43,8 @@ export default function Result() {
   const [explainLoading,  setExplainLoading]  = useState(false)
   const [diagnoseError,   setDiagnoseError]   = useState<string | null>(null)
   const [explainError,    setExplainError]    = useState<string | null>(null)
+  const [explainErrorCode, setExplainErrorCode] = useState<string | null>(null)
+  const [explainRetry,    setExplainRetry]    = useState(0)
 
   useEffect(() => {
     const st = location.state as { elsTerms: ElsTerms; userProfile: UserProfile } | null
@@ -77,15 +79,19 @@ export default function Result() {
     setExplainLoading(true)
     setExplain(null)
     setExplainError(null)
+    setExplainErrorCode(null)
     fetchExplain(st.elsTerms, diagnosis, st.userProfile)
       .then(res => {
         if (!cancelled && res.ok) setExplain(res.data)
-        else if (!cancelled) setExplainError(res.error.message)
+        else if (!cancelled) {
+          setExplainError(res.error.message)
+          setExplainErrorCode(res.error.code)
+        }
       })
       .catch(() => { if (!cancelled) setExplainError('해설 생성 중 오류가 발생했습니다.') })
       .finally(() => { if (!cancelled) setExplainLoading(false) })
     return () => { cancelled = true }
-  }, [diagnosis, location])
+  }, [diagnosis, location, explainRetry])
 
   if (!state) return <Navigate to="/input" replace />
 
@@ -134,7 +140,7 @@ export default function Result() {
               )}
               <div className={styles.lossBig}>
                 {lossPct}
-                <span className={styles.lossSuffix}>%</span>
+                {diagnosis && <span className={styles.lossSuffix}>%</span>}
               </div>
               <p className={styles.lossLabel}>원금손실 확률</p>
               <p className={styles.condSummary}>
@@ -172,21 +178,21 @@ export default function Result() {
           <div className={styles.metricCard}>
             <p className={styles.metricLabel}>기대수익 (연환산)</p>
             <div className={styles.metricValue}>
-              {expectedPct}<span className={styles.metricUnit}>%</span>
+              {expectedPct}{diagnosis && <span className={styles.metricUnit}>%</span>}
             </div>
             <p className={styles.metricNote}>손실 시나리오 포함 평균</p>
           </div>
           <div className={styles.metricCard}>
             <p className={styles.metricLabel}><TermTip definition="Conditional Value at Risk. 최악의 5% 경로에서의 평균 손실률로, 극단적 하락 시 피해 규모를 나타냅니다.">CVaR</TermTip> (하위 5%)</p>
             <div className={`${styles.metricValue} ${styles.metricValueWarn}`}>
-              -{cvarPct}<span className={styles.metricUnit}>%</span>
+              {diagnosis ? <>-{cvarPct}<span className={styles.metricUnit}>%</span></> : '—'}
             </div>
             <p className={styles.metricNote}>운 나쁜 경우 평균 손실</p>
           </div>
           <div className={styles.metricCard}>
             <p className={styles.metricLabel}><TermTip definition="만기 전 평가일에 기초자산이 배리어 이상이면 원금과 쿠폰을 돌려받는 구조입니다.">조기상환</TermTip> 확률</p>
             <div className={styles.metricValue}>
-              {earlyPct}<span className={styles.metricUnit}>%</span>
+              {earlyPct}{diagnosis && <span className={styles.metricUnit}>%</span>}
             </div>
             <p className={styles.metricNote}>만기 전 상환될 확률</p>
           </div>
@@ -205,7 +211,7 @@ export default function Result() {
                   style={{ width: diagnosis ? `${couponPct}%` : '0%' }}
                 />
               </div>
-              <span className={styles.couponVal}>{`${couponPct}%`}</span>
+              <span className={styles.couponVal}>{couponPct}{diagnosis && '%'}</span>
             </div>
             <div className={styles.couponRow}>
               <span className={styles.couponRowLabel}>기대수익 (실질)</span>
@@ -215,7 +221,7 @@ export default function Result() {
                   style={{ width: diagnosis ? `${Math.max(0, parseFloat(expectedPct))}%` : '0%' }}
                 />
               </div>
-              <span className={styles.couponVal}>{`${expectedPct}%`}</span>
+              <span className={styles.couponVal}>{expectedPct}{diagnosis && '%'}</span>
             </div>
           </div>
         </div>
@@ -295,7 +301,14 @@ export default function Result() {
           {explainLoading ? (
             <p className={styles.explainLoading}>Claude가 해설을 작성하는 중입니다...</p>
           ) : explainError ? (
-            <p className="errorMsg">{explainError}</p>
+            <div className={styles.explainErrorWrap}>
+              <p className="errorMsg">{explainError}</p>
+              {explainErrorCode === 'LLM_UNAVAILABLE' && (
+                <button className={styles.btnRetry} onClick={() => setExplainRetry(c => c + 1)}>
+                  재시도
+                </button>
+              )}
+            </div>
           ) : explain ? (
             <>
               <p className={styles.explainSummary}>{explain.summary_line}</p>

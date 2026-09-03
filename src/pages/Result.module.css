@@ -330,6 +330,26 @@
   margin-bottom: 20px;
 }
 
+.explainErrorWrap {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.btnRetry {
+  font-size: 13px;
+  color: var(--ink);
+  border: 1px solid var(--line-dark);
+  border-radius: var(--radius-btn);
+  padding: 7px 14px;
+  transition: border-color 140ms ease;
+}
+
+.btnRetry:hover {
+  border-color: var(--ink);
+}
+
 .explainLoading {
   font-size: 14px;
   color: var(--muted);
