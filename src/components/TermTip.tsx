@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, useId } from 'react'
+import { useState, useRef, useEffect, useCallback, useId } from 'react'
 import styles from './TermTip.module.css'
 
 interface Props {
@@ -7,17 +7,18 @@ interface Props {
 }
 
 export default function TermTip({ definition, children }: Props) {
-  const [visible, setVisible] = useState(false)
+  const [hovered, setHovered] = useState(false)
+  const [focused, setFocused] = useState(false)
+  const visible = hovered || focused
   const wrapRef = useRef<HTMLSpanElement>(null)
   const popupRef = useRef<HTMLSpanElement>(null)
   const id = useId()
 
-  useEffect(() => {
-    if (!visible || !popupRef.current || !wrapRef.current) return
+  const recalcPosition = useCallback(() => {
+    if (!popupRef.current || !wrapRef.current) return
     const el = popupRef.current
     const wrapEl = wrapRef.current
 
-    // 초기 중앙 정렬
     el.style.left = '50%'
     el.style.right = 'auto'
     el.style.transform = 'translateX(-50%)'
@@ -35,13 +36,19 @@ export default function TermTip({ definition, children }: Props) {
       el.style.transform = 'none'
     }
 
-    // 화살표를 항상 단어 중앙 위로
     const finalRect = el.getBoundingClientRect()
     const wrapRect = wrapEl.getBoundingClientRect()
     const termCenter = wrapRect.left + wrapRect.width / 2
     const arrowLeft = termCenter - finalRect.left
     el.style.setProperty('--arrow-left', `${arrowLeft}px`)
-  }, [visible])
+  }, [])
+
+  useEffect(() => {
+    if (!visible) return
+    recalcPosition()
+    window.addEventListener('resize', recalcPosition)
+    return () => window.removeEventListener('resize', recalcPosition)
+  }, [visible, recalcPosition])
 
   return (
     <span className={styles.wrap} ref={wrapRef}>
@@ -49,10 +56,10 @@ export default function TermTip({ definition, children }: Props) {
         className={styles.term}
         tabIndex={0}
         aria-describedby={id}
-        onMouseEnter={() => setVisible(true)}
-        onMouseLeave={() => setVisible(false)}
-        onFocus={() => setVisible(true)}
-        onBlur={() => setVisible(false)}
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
+        onFocus={() => setFocused(true)}
+        onBlur={() => setFocused(false)}
       >
         {children}
       </span>
