@@ -103,6 +103,14 @@ input:focus-visible {
   color: var(--white);
 }
 
+/* Breakpoints: md ≤ 768px | lg ≤ 1024px */
+@media (max-width: 1024px) {
+  :root { --page-padding: 28px; }
+}
+@media (max-width: 768px) {
+  :root { --page-padding: 20px; }
+}
+
 .container {
   max-width: var(--max-width);
   padding: 0 var(--page-padding);

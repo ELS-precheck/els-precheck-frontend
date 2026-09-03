@@ -479,3 +479,21 @@
   margin-top: 8px;
   line-height: 1.5;
 }
+
+@media (max-width: 1024px) {
+  .presetGrid { grid-template-columns: repeat(2, 1fr); }
+
+  .profileGrid { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 768px) {
+  .pageTitle { font-size: 28px; }
+
+  .presetGrid { grid-template-columns: 1fr; }
+
+  .uploadGrid { grid-template-columns: 1fr; }
+
+  .directGrid { grid-template-columns: 1fr 1fr; }
+
+  .profileGrid { grid-template-columns: 1fr; }
+}
