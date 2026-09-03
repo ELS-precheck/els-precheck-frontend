@@ -493,7 +493,7 @@
 
   .uploadGrid { grid-template-columns: 1fr; }
 
-  .directGrid { grid-template-columns: 1fr 1fr; }
+  .directGrid { grid-template-columns: 1fr; }
 
   .profileGrid { grid-template-columns: 1fr; }
 }

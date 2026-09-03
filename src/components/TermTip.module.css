@@ -10,13 +10,13 @@
   color: inherit;
 }
 
-.wrap:hover .term {
+.wrap:hover .term,
+.term:focus-visible {
   color: var(--ink) !important;
   border-bottom-color: var(--ink);
 }
 
 .popup {
-  display: none;
   position: absolute;
   bottom: calc(100% + 7px);
   left: 50%;
@@ -39,13 +39,8 @@
   content: '';
   position: absolute;
   top: 100%;
-  left: 50%;
+  left: var(--arrow-left, 50%);
   transform: translateX(-50%);
   border: 5px solid transparent;
   border-top-color: var(--ink);
-}
-
-.wrap:hover .popup,
-.wrap:focus-within .popup {
-  display: block;
 }
