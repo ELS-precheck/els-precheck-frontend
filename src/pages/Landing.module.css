@@ -84,7 +84,6 @@
   font-size: 17.5px;
   color: var(--mid);
   line-height: 1.62;
-  max-width: 30em;
   text-wrap: pretty;
   margin-bottom: 32px;
 }

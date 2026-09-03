@@ -22,7 +22,7 @@ export default function Header() {
       <div className={styles.inner}>
         <div className={styles.wordmark}>
           <img src={logoUrl} width={28} height={28} alt="" />
-          ELS Precheck
+          <span className={styles.wordmarkText}>ELS Precheck</span>
         </div>
 
         <nav className={styles.nav}>
