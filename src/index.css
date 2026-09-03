@@ -29,7 +29,7 @@
 
   /* Layout */
   --max-width: 1180px;
-  --page-padding: 40px;
+  --page-padding: 48px;
   --header-height: 64px;
 
   /* Border radius */
@@ -101,6 +101,14 @@ input:focus-visible {
 ::selection {
   background: var(--ink);
   color: var(--white);
+}
+
+/* Breakpoints: md ≤ 768px | lg ≤ 1024px */
+@media (max-width: 1024px) {
+  :root { --page-padding: 40px; }
+}
+@media (max-width: 768px) {
+  :root { --page-padding: 24px; }
 }
 
 .container {

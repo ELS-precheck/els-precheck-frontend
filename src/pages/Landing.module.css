@@ -84,7 +84,6 @@
   font-size: 17.5px;
   color: var(--mid);
   line-height: 1.62;
-  max-width: 30em;
   text-wrap: pretty;
   margin-bottom: 32px;
 }
@@ -334,4 +333,44 @@
   color: var(--muted);
   line-height: 1.6;
   margin-top: 40px;
+}
+
+@media (max-width: 1024px) {
+  .heroGrid {
+    grid-template-columns: 1fr;
+    gap: 48px;
+  }
+
+  .stepsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .contextStats {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .contextStatLeft {
+    border-right: none;
+    padding-right: 0;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .heroH1 {
+    font-size: clamp(28px, 7vw, 38px);
+    white-space: normal;
+  }
+
+  .heroLead { font-size: 15.5px; }
+
+  .heroButtons { flex-direction: column; }
+
+  .hero { padding: 60px 0 48px; }
+
+  .contextBanner { padding: 48px 0; }
+
+  .steps { padding: 48px 0 40px; }
 }

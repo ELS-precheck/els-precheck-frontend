@@ -411,6 +411,28 @@
   border-color: var(--ink);
 }
 
+@media (max-width: 1024px) {
+  .headerGrid { gap: 32px; }
+}
+
+@media (max-width: 768px) {
+  .headerGrid {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  .lossBig { font-size: 64px; }
+
+  .metricsGrid { grid-template-columns: 1fr; }
+
+  .couponRow { grid-template-columns: 100px 1fr 48px; }
+
+  .footer { flex-direction: column; align-items: stretch; }
+
+  .btnPrimary,
+  .btnSecondary { text-align: center; }
+}
+
 @media print {
   .page {
     padding: 20px 0;
