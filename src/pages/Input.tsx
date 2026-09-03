@@ -312,7 +312,7 @@ export default function Input() {
                   </>
                 )}
               </div>
-              {uploadError && <p className={styles.errorMsg}>{uploadError}</p>}
+              {uploadError && <p className="errorMsg">{uploadError}</p>}
               {extractWarnings.length > 0 && (
                 <div className={styles.extractWarnings}>
                   {extractWarnings.map((w, i) => <p key={i} className={styles.extractWarning}>{w}</p>)}
@@ -346,7 +346,7 @@ export default function Input() {
                 <p className={styles.extractFooterNote}>
                   AI 추출 결과를 확인하고 틀린 항목은 직접 수정해 주세요.
                 </p>
-                {extractError && <p className={styles.errorMsg}>{extractError}</p>}
+                {extractError && <p className="errorMsg">{extractError}</p>}
                 <button
                   className={styles.btnPrimary}
                   disabled={extractStatus !== 'done'}
@@ -378,7 +378,7 @@ export default function Input() {
                 </label>
               ))}
             </div>
-            {directError && <p className={styles.errorMsg}>{directError}</p>}
+            {directError && <p className="errorMsg">{directError}</p>}
             <button className={styles.btnPrimary} onClick={handleDirectDiagnose}>
               진단하기
             </button>
