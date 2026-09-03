@@ -57,7 +57,15 @@ export default function Result() {
           setDiagnosis(null)
           setExplain(null)
           setExplainError(null)
+          setExplainLoading(false)
         }
+      })
+      .catch(() => {
+        setDiagnoseError('진단 중 오류가 발생했습니다. 다시 시도해 주세요.')
+        setDiagnosis(null)
+        setExplain(null)
+        setExplainError(null)
+        setExplainLoading(false)
       })
       .finally(() => setDiagnoseLoading(false))
   }, [volatility, location])
@@ -74,6 +82,7 @@ export default function Result() {
         if (!cancelled && res.ok) setExplain(res.data)
         else if (!cancelled) setExplainError(res.error.message)
       })
+      .catch(() => { if (!cancelled) setExplainError('해설 생성 중 오류가 발생했습니다.') })
       .finally(() => { if (!cancelled) setExplainLoading(false) })
     return () => { cancelled = true }
   }, [diagnosis, location])
