@@ -82,10 +82,12 @@ export default function Result() {
     setExplainErrorCode(null)
     fetchExplain(st.elsTerms, diagnosis, st.userProfile)
       .then(res => {
-        if (!cancelled && res.ok) setExplain(res.data)
-        else if (!cancelled) {
-          setExplainError(res.error.message)
-          setExplainErrorCode(res.error.code)
+        if (!cancelled) {
+          if (res.ok) setExplain(res.data)
+          else {
+            setExplainError(res.error.message)
+            setExplainErrorCode(res.error.code)
+          }
         }
       })
       .catch(() => { if (!cancelled) setExplainError('해설 생성 중 오류가 발생했습니다.') })
@@ -239,7 +241,7 @@ export default function Result() {
                   {distData.map((d, i) => (
                     <Cell key={i} fill={d.isLoss ? '#F0A9A6' : 'var(--track)'} />
                   ))}
-                  <LabelList dataKey="count" position="top" style={{ fontSize: 11, fill: 'var(--sub)' }} formatter={(v: number) => v.toLocaleString()} />
+                  <LabelList dataKey="count" position="top" style={{ fontSize: 11, fill: 'var(--sub)' }} formatter={(v: unknown) => (v as number).toLocaleString()} />
                 </Bar>
               </BarChart>
             </ResponsiveContainer>
@@ -256,7 +258,7 @@ export default function Result() {
                 <XAxis dataKey="label" tick={{ fontSize: 12, fill: 'var(--sub)' }} axisLine={false} tickLine={false} />
                 <YAxis hide />
                 <Bar dataKey="prob" fill="var(--ink)" radius={[4, 4, 0, 0]}>
-                  <LabelList dataKey="prob" position="top" style={{ fontSize: 11, fill: 'var(--sub)' }} formatter={(v: number) => `${v}%`} />
+                  <LabelList dataKey="prob" position="top" style={{ fontSize: 11, fill: 'var(--sub)' }} formatter={(v: unknown) => `${v}%`} />
                 </Bar>
               </BarChart>
             </ResponsiveContainer>
