@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { fetchPresets, fetchExtract } from '../lib/dummy-api'
+import { fetchPresets } from '../lib/api'
+import { fetchExtract } from '../lib/dummy-api'
 import type { Preset, ElsTerms, UserProfile } from '../lib/types'
 import styles from './Input.module.css'
 
@@ -101,6 +102,7 @@ export default function Input() {
 
   const [activeTab,        setActiveTab]        = useState<Tab>('preset')
   const [presets,          setPresets]          = useState<Preset[]>([])
+  const [presetsError,     setPresetsError]     = useState<string | null>(null)
   const [selectedPresetId, setSelectedPresetId] = useState<string | null>(null)
 
   const [extractStatus,   setExtractStatus]   = useState<'idle' | 'loading' | 'done' | 'error'>('idle')
@@ -119,7 +121,10 @@ export default function Input() {
   const [amount,       setAmount]       = useState('')
 
   useEffect(() => {
-    fetchPresets().then(res => { if (res.ok) setPresets(res.data.presets) })
+    fetchPresets().then(res => {
+      if (res.ok) setPresets(res.data.presets)
+      else setPresetsError(res.error.message)
+    }).catch(() => setPresetsError('프리셋을 불러오지 못했어요. 다시 시도해 주세요.'))
   }, [])
 
   const handleFileSelect = async (file: File) => {
@@ -220,6 +225,7 @@ export default function Input() {
         {/* 프리셋 탭 */}
         {activeTab === 'preset' && (
           <div className={styles.presetGrid}>
+            {presetsError && <p className="errorMsg">{presetsError}</p>}
             {presets.map(preset => {
               const isSelected = selectedPresetId === preset.id
               const isHigh     = preset.expected_grade === '고위험'

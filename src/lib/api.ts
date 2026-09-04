@@ -86,7 +86,7 @@ export async function fetchExtract(file: File): Promise<ApiResponse<ExtractData>
   }
 }
 
-// POST /api/diagnose — 타임아웃 5s, 재시도 없음
+// POST /api/diagnose — 타임아웃 15s, 재시도 없음
 export async function fetchDiagnose(
   els_terms: ElsTerms,
   overrides?: { volatility_scale?: number },
@@ -95,7 +95,7 @@ export async function fetchDiagnose(
   return request('/api/diagnose', {
     method: 'POST',
     body: JSON.stringify({ els_terms, overrides, num_paths }),
-  })
+  }, 15_000)
 }
 
 // POST /api/explain — 타임아웃 30s, 1회 재시도
