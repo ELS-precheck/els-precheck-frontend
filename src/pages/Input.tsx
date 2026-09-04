@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { fetchPresets } from '../lib/api'
-import { fetchExtract } from '../lib/dummy-api'
+import { fetchExtract } from '../lib/api'
 import type { Preset, ElsTerms, UserProfile } from '../lib/types'
 import styles from './Input.module.css'
 
@@ -137,6 +137,7 @@ export default function Input() {
       return
     }
     setUploadError(null)
+    setExtractWarnings([])
     setExtractStatus('loading')
     const res = await fetchExtract(file)
     if (res.ok) {
