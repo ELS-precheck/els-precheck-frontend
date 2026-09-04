@@ -124,5 +124,6 @@ input:focus-visible {
   border-radius: var(--radius-badge);
   padding: 8px 12px;
   line-height: 1.5;
+  margin-top: 8px;
   margin-bottom: 16px;
 }
