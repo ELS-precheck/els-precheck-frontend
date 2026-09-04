@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { fetchPresets, fetchExtract } from '../lib/dummy-api'
+import { fetchPresets } from '../lib/api'
+import { fetchExtract } from '../lib/dummy-api'
 import type { Preset, ElsTerms, UserProfile } from '../lib/types'
 import styles from './Input.module.css'
 
