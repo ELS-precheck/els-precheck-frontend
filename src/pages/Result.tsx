@@ -46,6 +46,13 @@ export default function Result() {
   const [explainError,    setExplainError]    = useState<string | null>(null)
   const [explainErrorCode, setExplainErrorCode] = useState<string | null>(null)
   const [explainRetry,    setExplainRetry]    = useState(0)
+  const [windowWidth,     setWindowWidth]     = useState(window.innerWidth)
+
+  useEffect(() => {
+    const handleResize = () => setWindowWidth(window.innerWidth)
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
 
   useEffect(() => {
     const st = location.state as { elsTerms: ElsTerms; userProfile: UserProfile } | null
@@ -236,13 +243,13 @@ export default function Result() {
           <div className={styles.chartWrap}>
             <ResponsiveContainer width="100%" height={220}>
               <BarChart data={distData} barCategoryGap="12%" margin={{ top: 24 }}>
-                <XAxis dataKey="label" tick={{ fontSize: 12, fill: 'var(--sub)' }} axisLine={false} tickLine={false} />
+                <XAxis dataKey="label" tick={{ fontSize: windowWidth < 768 ? 7 : 12, fill: 'var(--sub)' }} axisLine={false} tickLine={false} interval={0} />
                 <YAxis hide />
-                <Bar dataKey="count" radius={[4, 4, 0, 0]}>
+                <Bar dataKey="count" radius={windowWidth < 768 ? [2, 2, 0, 0] : [4, 4, 0, 0]}>
                   {distData.map((d, i) => (
                     <Cell key={i} fill={d.isLoss ? '#F0A9A6' : 'var(--track)'} />
                   ))}
-                  <LabelList dataKey="count" position="top" style={{ fontSize: 11, fill: 'var(--sub)' }} formatter={(v: unknown) => (v as number).toLocaleString()} />
+                  <LabelList dataKey="count" position="top" style={{ fontSize: windowWidth < 768 ? 5 : 11, fill: 'var(--ink)' }} formatter={(v: unknown) => { const n = v as number; const threshold = (diagnosis?.meta.num_paths ?? 100_000) * 0.02; return n >= threshold ? n.toLocaleString() : '' }} />
                 </Bar>
               </BarChart>
             </ResponsiveContainer>
