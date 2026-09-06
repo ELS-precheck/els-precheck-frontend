@@ -21,7 +21,11 @@ export default function Header() {
     if (path === '/result' && pathname !== '/result') {
       if (toastTimerRef.current) clearTimeout(toastTimerRef.current)
       setToast(true)
-      toastTimerRef.current = setTimeout(() => setToast(false), 2500)
+      toastTimerRef.current = setTimeout(() => {
+        setToast(false)
+        navigate('/input')
+        window.scrollTo(0, 0)
+      }, 1500)
       return
     }
     navigate(path)
