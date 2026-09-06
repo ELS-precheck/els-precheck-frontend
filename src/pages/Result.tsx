@@ -164,7 +164,7 @@ export default function Result() {
             )}
         </div>
 
-        {diagnosis?.meta.vol_warnings?.length > 0 && (
+        {(diagnosis?.meta.vol_warnings?.length ?? 0) > 0 && (
           <div className={styles.volWarnBanner}>
             일부 기초자산은 실측 변동성 데이터가 없어 보수적 기본값으로 추정했습니다.
           </div>
