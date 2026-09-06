@@ -29,6 +29,12 @@
   white-space: nowrap;
   text-decoration: none;
   cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.wordmark:hover,
+.wordmark:visited {
+  color: var(--ink);
 }
 
 
