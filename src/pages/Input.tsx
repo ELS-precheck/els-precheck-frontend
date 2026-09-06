@@ -108,8 +108,10 @@ export default function Input() {
   const [extractStatus,   setExtractStatus]   = useState<'idle' | 'loading' | 'done' | 'error'>('idle')
   const [extractForm,     setExtractForm]     = useState<ExtractForm>({ underlyings: '', coupon: '', maturity: '', barriers: '', knockIn: '' })
   const [extractInterval, setExtractInterval] = useState(6)
+  const [extractVolCorr,  setExtractVolCorr]  = useState<{ vol?: number[] | null; corr?: number[][] | null; underlyings?: string[] }>({})
   const [extractWarnings, setExtractWarnings] = useState<string[]>([])
   const [uploadError,     setUploadError]     = useState<string | null>(null)
+  const extractRequestIdRef = useRef(0)
   const [extractError,    setExtractError]    = useState<string | null>(null)
   const [isDragging,      setIsDragging]      = useState(false)
 
@@ -128,6 +130,10 @@ export default function Input() {
   }, [])
 
   const handleFileSelect = async (file: File) => {
+    setUploadError(null)
+    setExtractWarnings([])
+    setExtractVolCorr({})
+    setExtractStatus('idle')
     if (file.type !== 'application/pdf') {
       setUploadError('PDF 파일만 업로드할 수 있어요.')
       return
@@ -136,13 +142,14 @@ export default function Input() {
       setUploadError('10MB 이하 PDF만 올릴 수 있어요.')
       return
     }
-    setUploadError(null)
-    setExtractWarnings([])
+    const requestId = ++extractRequestIdRef.current
     setExtractStatus('loading')
     const res = await fetchExtract(file)
+    if (extractRequestIdRef.current !== requestId) return
     if (res.ok) {
       setExtractForm(termsToExtractForm(res.data.els_terms))
       setExtractInterval(res.data.els_terms.check_interval_months)
+      setExtractVolCorr({ vol: res.data.els_terms.vol, corr: res.data.els_terms.corr, underlyings: res.data.els_terms.underlyings })
       setExtractWarnings(res.data.warnings)
       setExtractStatus('done')
     } else {
@@ -194,7 +201,12 @@ export default function Input() {
       return
     }
     setExtractError(null)
-    toDiagnose(terms)
+    const orig = extractVolCorr.underlyings ?? []
+    const underlyingsMatch = terms.underlyings.length === orig.length && terms.underlyings.every((u, i) => u === orig[i])
+    const volCorr: { vol?: number[] | null; corr?: number[][] | null } = {}
+    if (underlyingsMatch && extractVolCorr.vol) volCorr.vol = extractVolCorr.vol
+    if (underlyingsMatch && extractVolCorr.corr) volCorr.corr = extractVolCorr.corr
+    toDiagnose({ ...terms, ...volCorr })
   }
 
   return (
