@@ -104,9 +104,12 @@
 }
 
 @media (max-width: 768px) {
-  .inner { gap: 12px; }
+  .inner { gap: 8px; }
 
-  .wordmarkText { display: none; }
+  .wordmark {
+    font-size: 11px;
+    gap: 4px;
+  }
 
   .step {
     padding: 6px 10px;
