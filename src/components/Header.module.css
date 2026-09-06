@@ -27,6 +27,8 @@
   align-items: center;
   gap: 8px;
   white-space: nowrap;
+  text-decoration: none;
+  cursor: pointer;
 }
 
 
@@ -87,10 +89,10 @@
   border-radius: var(--radius-pill);
   white-space: nowrap;
   pointer-events: none;
-  animation: fadeInOut 2.5s ease forwards;
+  animation: fade-in-out 2.5s ease forwards;
 }
 
-@keyframes fadeInOut {
+@keyframes fade-in-out {
   0%   { opacity: 0; transform: translateX(-50%) translateY(-4px); }
   15%  { opacity: 1; transform: translateX(-50%) translateY(0); }
   75%  { opacity: 1; }

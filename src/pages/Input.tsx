@@ -133,6 +133,8 @@ export default function Input() {
   const handleFileRemove = () => {
     setSelectedFile(null)
     setExtractStatus('idle')
+    setExtractForm({ underlyings: '', coupon: '', maturity: '', barriers: '', knockIn: '' })
+    setExtractInterval(6)
     setExtractWarnings([])
     setExtractVolCorr({})
     setUploadError(null)
@@ -321,16 +323,17 @@ export default function Input() {
                 onDragLeave={() => setIsDragging(false)}
                 onDrop={handleDrop}
               >
-                {extractStatus === 'loading' ? (
-                  <p className={styles.uploadLoading}>Claude가 조건을 읽는 중입니다...</p>
-                ) : selectedFile ? (
+                {selectedFile ? (
                   <div className={styles.uploadFileInfo}>
                     <svg className={styles.uploadFileIcon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                       <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" strokeLinecap="round" strokeLinejoin="round"/>
                       <polyline points="14 2 14 8 20 8" strokeLinecap="round" strokeLinejoin="round"/>
                     </svg>
                     <span className={styles.uploadFileName}>{selectedFile.name}</span>
-                    <button className={styles.uploadFileRemove} onClick={handleFileRemove} aria-label="파일 제거">×</button>
+                    {extractStatus === 'loading'
+                      ? <span className={styles.uploadLoading}>읽는 중...</span>
+                      : <button className={styles.uploadFileRemove} onClick={handleFileRemove} aria-label="파일 제거">×</button>
+                    }
                   </div>
                 ) : (
                   <>
