@@ -111,6 +111,7 @@ export default function Input() {
   const [extractVolCorr,  setExtractVolCorr]  = useState<{ vol?: number[] | null; corr?: number[][] | null }>({})
   const [extractWarnings, setExtractWarnings] = useState<string[]>([])
   const [uploadError,     setUploadError]     = useState<string | null>(null)
+  const extractRequestIdRef = useRef(0)
   const [extractError,    setExtractError]    = useState<string | null>(null)
   const [isDragging,      setIsDragging]      = useState(false)
 
@@ -129,6 +130,10 @@ export default function Input() {
   }, [])
 
   const handleFileSelect = async (file: File) => {
+    setUploadError(null)
+    setExtractWarnings([])
+    setExtractVolCorr({})
+    setExtractStatus('idle')
     if (file.type !== 'application/pdf') {
       setUploadError('PDF 파일만 업로드할 수 있어요.')
       return
@@ -137,11 +142,10 @@ export default function Input() {
       setUploadError('10MB 이하 PDF만 올릴 수 있어요.')
       return
     }
-    setUploadError(null)
-    setExtractWarnings([])
-    setExtractVolCorr({})
+    const requestId = ++extractRequestIdRef.current
     setExtractStatus('loading')
     const res = await fetchExtract(file)
+    if (extractRequestIdRef.current !== requestId) return
     if (res.ok) {
       setExtractForm(termsToExtractForm(res.data.els_terms))
       setExtractInterval(res.data.els_terms.check_interval_months)
@@ -197,7 +201,10 @@ export default function Input() {
       return
     }
     setExtractError(null)
-    toDiagnose({ ...terms, ...extractVolCorr })
+    const volCorr: { vol?: number[] | null; corr?: number[][] | null } = {}
+    if (extractVolCorr.vol && terms.underlyings.length === extractVolCorr.vol.length) volCorr.vol = extractVolCorr.vol
+    if (extractVolCorr.corr && terms.underlyings.length === extractVolCorr.corr.length) volCorr.corr = extractVolCorr.corr
+    toDiagnose({ ...terms, ...volCorr })
   }
 
   return (
