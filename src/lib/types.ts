@@ -36,6 +36,7 @@ export interface Preset {
   label: string
   one_line: string
   expected_grade: string
+  data_note: string
   els_terms: ElsTerms
 }
 

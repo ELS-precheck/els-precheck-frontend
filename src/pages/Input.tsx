@@ -303,6 +303,9 @@ export default function Input() {
                       </span>
                     </div>
                   </div>
+                  {preset.data_note && (
+                    <p className={styles.presetDataNote}>{preset.data_note}</p>
+                  )}
                   <button
                     className={styles.btnPrimary}
                     onClick={e => { e.stopPropagation(); toDiagnose(preset.els_terms) }}

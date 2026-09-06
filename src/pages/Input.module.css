@@ -182,6 +182,12 @@
   color: var(--sub);
 }
 
+.presetDataNote {
+  font-size: 11px;
+  color: var(--faint);
+  margin-bottom: 10px;
+}
+
 .presetTerms {
   border-top: 1px solid var(--line);
   padding-top: 14px;
