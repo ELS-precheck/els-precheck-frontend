@@ -46,7 +46,6 @@ export default function Header() {
           ))}
         </nav>
 
-        <span className={styles.disclaimer}>투자권유 아님 · 정보 해설</span>
       </div>
     </header>
   )
