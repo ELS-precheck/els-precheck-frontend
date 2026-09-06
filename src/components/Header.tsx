@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import styles from './Header.module.css'
 import logoUrl from '../assets/els-precheck-mark.svg'
@@ -11,16 +12,23 @@ const STEPS = [
 export default function Header() {
   const navigate = useNavigate()
   const { pathname } = useLocation()
+  const [toast, setToast] = useState(false)
 
   const handleStep = (path: string) => {
+    if (path === '/result' && pathname !== '/result') {
+      setToast(true)
+      setTimeout(() => setToast(false), 2500)
+      return
+    }
     navigate(path)
     window.scrollTo(0, 0)
   }
 
   return (
     <header className={styles.header}>
+      {toast && <div className={styles.toast}>상품을 먼저 입력해 주세요.</div>}
       <div className={styles.inner}>
-        <div className={styles.wordmark}>
+        <div className={styles.wordmark} onClick={() => handleStep('/')} style={{ cursor: 'pointer' }}>
           <img src={logoUrl} width={28} height={28} alt="" />
           <span className={styles.wordmarkText}>ELS Precheck</span>
         </div>

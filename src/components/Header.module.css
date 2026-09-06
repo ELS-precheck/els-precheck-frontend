@@ -75,6 +75,28 @@
   white-space: nowrap;
 }
 
+.toast {
+  position: absolute;
+  top: calc(var(--header-height) + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--ink);
+  color: #fff;
+  font-size: 13px;
+  padding: 9px 18px;
+  border-radius: var(--radius-pill);
+  white-space: nowrap;
+  pointer-events: none;
+  animation: fadeInOut 2.5s ease forwards;
+}
+
+@keyframes fadeInOut {
+  0%   { opacity: 0; transform: translateX(-50%) translateY(-4px); }
+  15%  { opacity: 1; transform: translateX(-50%) translateY(0); }
+  75%  { opacity: 1; }
+  100% { opacity: 0; }
+}
+
 @media (max-width: 1024px) {
   .disclaimer { display: none; }
 }

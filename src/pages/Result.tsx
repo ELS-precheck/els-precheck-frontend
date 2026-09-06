@@ -49,6 +49,10 @@ export default function Result() {
   const [windowWidth,     setWindowWidth]     = useState(window.innerWidth)
 
   useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
+
+  useEffect(() => {
     const handleResize = () => setWindowWidth(window.innerWidth)
     window.addEventListener('resize', handleResize)
     return () => window.removeEventListener('resize', handleResize)
@@ -275,7 +279,7 @@ export default function Result() {
 
         {/* 세 결말 비율 */}
         <div className={styles.section}>
-          <h3 className={styles.sectionTitle}>세 가지 결말</h3>
+          <h3 className={styles.sectionTitle}>상환 결과 비율</h3>
           {!diagnosis && <div className={styles.outcomeSkeleton} />}
           {diagnosis && (
             <>
