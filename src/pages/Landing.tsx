@@ -80,7 +80,7 @@ export default function Landing() {
               <div className={styles.sampleLoss}>
                 {SAMPLE.loss}<span className={styles.sampleLossSuffix}>%</span>
               </div>
-              <p className={styles.sampleLossLabel}>원금손실 확률 / 위험 등급 높음</p>
+              <p className={styles.sampleLossLabel}>원금손실 확률 / 중위험</p>
               <div className={styles.stackBar}>
                 <div className={styles.stackBarEarly} style={{ width: `${SAMPLE.early}%` }} />
                 <div className={styles.stackBarMat} style={{ width: `${SAMPLE.mat}%` }} />

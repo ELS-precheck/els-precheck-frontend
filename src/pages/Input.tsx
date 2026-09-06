@@ -123,6 +123,8 @@ export default function Input() {
   const [riskAppetite, setRiskAppetite] = useState<UserProfile['risk_appetite']>(null)
   const [amount,       setAmount]       = useState('')
 
+  useEffect(() => { window.scrollTo(0, 0) }, [])
+
   useEffect(() => {
     fetchPresets().then(res => {
       if (res.ok) setPresets(res.data.presets)
@@ -230,9 +232,9 @@ export default function Input() {
         {/* 페이지 헤더 */}
         <div className={styles.pageHeader}>
           <p className={styles.pageOverline}>STEP 02 · 상품 조건</p>
-          <h2 className={styles.pageTitle}>진단할 상품을 고르세요.</h2>
+          <h2 className={styles.pageTitle}>진단할 상품을 입력하세요.</h2>
           <p className={styles.pageSub}>
-            대표 구조 3개 중 선택하거나, 상품설명서 PDF를 올리거나, 조건을 직접 입력하세요.
+            예시 상품으로 체험하거나, 실제 상품설명서 PDF를 올려 숨은 위험을 확인하세요. 조건을 직접 입력할 수도 있습니다.
           </p>
         </div>
 
@@ -242,7 +244,7 @@ export default function Input() {
             <button
               key={tab}
               className={`${styles.tabItem} ${activeTab === tab ? styles.tabActive : ''}`}
-              onClick={() => setActiveTab(tab)}
+              onClick={() => { setActiveTab(tab); setUploadError(null); setExtractError(null); setDirectError(null) }}
             >
               {tab === 'preset' ? '프리셋' : tab === 'upload' ? 'PDF 업로드' : '직접 입력'}
             </button>
