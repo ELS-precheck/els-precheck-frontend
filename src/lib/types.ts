@@ -74,7 +74,9 @@ export interface DiagnoseData {
   meta: {
     num_paths: number
     compute_ms: number
+    steps: number
     data_asof: string
+    vol_warnings: { asset: string; vol: number; message: string }[]
   }
 }
 

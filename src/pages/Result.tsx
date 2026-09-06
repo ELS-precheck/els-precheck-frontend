@@ -140,12 +140,35 @@ export default function Result() {
             </div>
             <p className={styles.lossLabel}>원금손실 확률</p>
             <p className={styles.condSummary}>
-              {elsTerms.underlyings.join(' + ')} &middot; 연 {(elsTerms.coupon_annual * 100).toFixed(1)}% &middot; {elsTerms.maturity_months / 12}년
+              {elsTerms.underlyings.map((u, i) => {
+                const warn = diagnosis?.meta.vol_warnings?.find(w => w.asset === u)
+                return (
+                  <span key={u}>
+                    {i > 0 && ' + '}
+                    {u}
+                    {warn && (
+                      <TermTip definition={warn.message}>
+                        <span className={styles.volWarnBadge}>추정 변동성</span>
+                      </TermTip>
+                    )}
+                  </span>
+                )
+              })}
+              {' '}&middot; 연 {(elsTerms.coupon_annual * 100).toFixed(1)}% &middot; {elsTerms.maturity_months / 12}년
               {elsTerms.knock_in && (
                 <> &middot; <TermTip definition="기초자산이 낙인선 아래로 한 번이라도 떨어지면 만기 시 원금 보호 조건이 사라지는 장치입니다.">낙인</TermTip> {(elsTerms.knock_in * 100).toFixed(0)}%</>
               )}
             </p>
+            {diagnosis?.meta.data_asof && (
+              <p className={styles.dataAsof}>데이터 기준일: {diagnosis.meta.data_asof}</p>
+            )}
         </div>
+
+        {diagnosis?.meta.vol_warnings?.length > 0 && (
+          <div className={styles.volWarnBanner}>
+            일부 기초자산은 실측 변동성 데이터가 없어 보수적 기본값으로 추정했습니다.
+          </div>
+        )}
 
         {diagnoseError && <p className="errorMsg">{diagnoseError}</p>}
 
