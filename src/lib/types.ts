@@ -20,6 +20,8 @@ export interface ElsTerms {
   step_down_barriers: number[]      // [0.90, 0.90, ...]
   knock_in: number | null           // 0.50 = 50%, null = 낙인 없음
   principal?: number                // 원 단위, 생략 시 10_000_000
+  vol?: number[] | null             // 기초자산별 변동성, 없으면 서버 기본값
+  corr?: number[][] | null          // 기초자산 간 상관계수 행렬, 없으면 서버 기본값
 }
 
 // 사용자 프로필

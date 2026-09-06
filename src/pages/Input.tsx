@@ -108,6 +108,7 @@ export default function Input() {
   const [extractStatus,   setExtractStatus]   = useState<'idle' | 'loading' | 'done' | 'error'>('idle')
   const [extractForm,     setExtractForm]     = useState<ExtractForm>({ underlyings: '', coupon: '', maturity: '', barriers: '', knockIn: '' })
   const [extractInterval, setExtractInterval] = useState(6)
+  const [extractVolCorr,  setExtractVolCorr]  = useState<{ vol?: number[] | null; corr?: number[][] | null }>({})
   const [extractWarnings, setExtractWarnings] = useState<string[]>([])
   const [uploadError,     setUploadError]     = useState<string | null>(null)
   const [extractError,    setExtractError]    = useState<string | null>(null)
@@ -138,11 +139,13 @@ export default function Input() {
     }
     setUploadError(null)
     setExtractWarnings([])
+    setExtractVolCorr({})
     setExtractStatus('loading')
     const res = await fetchExtract(file)
     if (res.ok) {
       setExtractForm(termsToExtractForm(res.data.els_terms))
       setExtractInterval(res.data.els_terms.check_interval_months)
+      setExtractVolCorr({ vol: res.data.els_terms.vol, corr: res.data.els_terms.corr })
       setExtractWarnings(res.data.warnings)
       setExtractStatus('done')
     } else {
@@ -194,7 +197,7 @@ export default function Input() {
       return
     }
     setExtractError(null)
-    toDiagnose(terms)
+    toDiagnose({ ...terms, ...extractVolCorr })
   }
 
   return (
