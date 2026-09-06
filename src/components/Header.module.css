@@ -58,8 +58,10 @@
   white-space: nowrap;
 }
 
-.step:hover {
-  background: var(--surface-1);
+@media (hover: hover) {
+  .step:hover {
+    background: var(--surface-1);
+  }
 }
 
 .step.active {
