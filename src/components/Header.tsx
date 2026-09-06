@@ -36,7 +36,7 @@ export default function Header() {
         </div>
       )}
       <div className={styles.inner}>
-        <Link to="/" className={styles.wordmark}>
+        <Link to="/" className={styles.wordmark} onClick={() => window.scrollTo(0, 0)}>
           <img src={logoUrl} width={28} height={28} alt="" />
           <span className={styles.wordmarkText}>ELS Precheck</span>
         </Link>
