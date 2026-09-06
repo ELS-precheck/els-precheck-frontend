@@ -236,6 +236,7 @@ export default function Input() {
           <p className={styles.pageSub}>
             예시 상품으로 체험하거나, 실제 상품설명서 PDF를 올려 숨은 위험을 확인하세요. 조건을 직접 입력할 수도 있습니다.
           </p>
+          <p className={styles.pageScope}>스텝다운형 ELS 전용 진단입니다. 낙아웃형·리자드형·월지급식 등 다른 구조는 결과가 부정확할 수 있습니다.</p>
         </div>
 
         {/* 탭 */}

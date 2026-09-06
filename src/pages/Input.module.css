@@ -31,6 +31,13 @@
   line-height: 1.6;
 }
 
+.pageScope {
+  font-size: 12px;
+  color: var(--faint);
+  margin-top: 8px;
+  line-height: 1.5;
+}
+
 /* 탭 */
 .tabs {
   display: inline-flex;

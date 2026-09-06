@@ -336,7 +336,7 @@ export default function Result() {
                   ))}
                 </div>
               )}
-              <p className={styles.disclaimer}>{explain.disclaimer}</p>
+              <p className={styles.disclaimer}>스텝다운형 ELS 전용 진단입니다. 낙아웃형·리자드형 등 다른 구조는 결과가 부정확할 수 있습니다. {explain.disclaimer}</p>
             </>
           ) : null}
         </div>
