@@ -7,29 +7,16 @@ import type { ElsTerms, UserProfile, DiagnoseData, ExplainData } from '../lib/ty
 import styles from './Result.module.css'
 import TermTip from '../components/TermTip'
 
-type VolatilityLevel = 'calm' | 'normal' | 'crisis'
-
-const VOLATILITY_SCALE: Record<VolatilityLevel, number> = {
-  calm:   0.7,
-  normal: 1.0,
-  crisis: 1.4,
-}
-
-const VOLATILITY_LABELS: Record<VolatilityLevel, string> = {
-  calm:   '평온',
-  normal: '보통',
-  crisis: '위기',
-}
-
-const VOLATILITY_NOTES: Record<VolatilityLevel, string> = {
-  calm:   '과거 저변동 구간 기준',
-  normal: '과거 평균 변동성 기준',
-  crisis: '금융위기 수준 변동성 기준',
-}
 
 function formatKRW(won: number): string {
   if (Math.abs(won) >= 100_000_000) return `${(won / 100_000_000).toFixed(1)}억원`
   return `${Math.round(won / 10_000).toLocaleString()}만원`
+}
+
+function fmtOutcomePct(v: number): string {
+  const pct = v * 100
+  if (pct > 0 && pct < 1) return '<1'
+  return pct.toFixed(0)
 }
 
 export default function Result() {
@@ -37,7 +24,6 @@ export default function Result() {
   const navigate = useNavigate()
   const state = location.state as { elsTerms: ElsTerms; userProfile: UserProfile } | null
 
-  const [volatility,      setVolatility]      = useState<VolatilityLevel>('normal')
   const [diagnosis,       setDiagnosis]       = useState<DiagnoseData | null>(null)
   const [explain,         setExplain]         = useState<ExplainData | null>(null)
   const [diagnoseLoading, setDiagnoseLoading] = useState(true)
@@ -47,6 +33,10 @@ export default function Result() {
   const [explainErrorCode, setExplainErrorCode] = useState<string | null>(null)
   const [explainRetry,    setExplainRetry]    = useState(0)
   const [windowWidth,     setWindowWidth]     = useState(window.innerWidth)
+
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
 
   useEffect(() => {
     const handleResize = () => setWindowWidth(window.innerWidth)
@@ -59,7 +49,7 @@ export default function Result() {
     if (!st) return
     setDiagnoseLoading(true)
     setDiagnoseError(null)
-    fetchDiagnose(st.elsTerms, { volatility_scale: VOLATILITY_SCALE[volatility] })
+    fetchDiagnose(st.elsTerms)
       .then(res => {
         if (res.ok) setDiagnosis(res.data)
         else {
@@ -78,7 +68,7 @@ export default function Result() {
         setExplainLoading(false)
       })
       .finally(() => setDiagnoseLoading(false))
-  }, [volatility, location])
+  }, [location])
 
   useEffect(() => {
     const st = location.state as { elsTerms: ElsTerms; userProfile: UserProfile } | null
@@ -139,52 +129,51 @@ export default function Result() {
         {/* 헤더 */}
         <div className={styles.pageHeader}>
           <p className={styles.pageOverline}>STEP 03 · 진단 결과</p>
-          <div className={styles.headerGrid}>
-
-            {/* 손실확률 */}
-            <div>
-              {grade && (
-                <span className={`${styles.gradeBadge} ${isHigh ? styles.gradeBadgeHigh : isMid ? styles.gradeBadgeMid : styles.gradeBadgeLow}`}>
-                  {grade}
-                </span>
+          {grade && (
+              <span className={`${styles.gradeBadge} ${isHigh ? styles.gradeBadgeHigh : isMid ? styles.gradeBadgeMid : styles.gradeBadgeLow}`}>
+                {grade}
+              </span>
+            )}
+            <div className={styles.lossBig}>
+              {lossPct}
+              {diagnosis && <span className={styles.lossSuffix}>%</span>}
+            </div>
+            <p className={styles.lossLabel}>원금손실 확률</p>
+            <p className={styles.condSummary}>
+              {elsTerms.underlyings.map((u, i) => {
+                const warn = diagnosis?.meta.vol_warnings?.find(w => w.asset === u)
+                return (
+                  <span key={u}>
+                    {i > 0 && ' + '}
+                    {u}
+                    {warn && (
+                      <TermTip definition={warn.message}>
+                        <span className={styles.volWarnBadge}>추정 변동성</span>
+                      </TermTip>
+                    )}
+                  </span>
+                )
+              })}
+              {' '}&middot; 연 {(elsTerms.coupon_annual * 100).toFixed(1)}% &middot; {elsTerms.maturity_months / 12}년
+              {elsTerms.knock_in && (
+                <> &middot; <TermTip definition="기초자산이 낙인선 아래로 한 번이라도 떨어지면 만기 시 원금 보호 조건이 사라지는 장치입니다.">낙인</TermTip> {(elsTerms.knock_in * 100).toFixed(0)}%</>
               )}
-              <div className={styles.lossBig}>
-                {lossPct}
-                {diagnosis && <span className={styles.lossSuffix}>%</span>}
-              </div>
-              <p className={styles.lossLabel}>원금손실 확률</p>
-              <p className={styles.condSummary}>
-                {elsTerms.underlyings.join(' + ')} &middot; 연 {(elsTerms.coupon_annual * 100).toFixed(1)}% &middot; {elsTerms.maturity_months / 12}년
-                {elsTerms.knock_in && (
-                  <> &middot; <TermTip definition="기초자산이 낙인선 아래로 한 번이라도 떨어지면 만기 시 원금 보호 조건이 사라지는 장치입니다.">낙인</TermTip> {(elsTerms.knock_in * 100).toFixed(0)}%</>
-                )}
-              </p>
-            </div>
-
-            {/* 변동성 선택 */}
-            <div className={styles.volatilityBox}>
-              <p className={styles.volatilityLabel}>변동성 시나리오</p>
-              <div className={styles.volatilityBtns}>
-                {(['calm', 'normal', 'crisis'] as VolatilityLevel[]).map(v => (
-                  <button
-                    key={v}
-                    className={`${styles.volatilityBtn} ${volatility === v ? styles.volatilityBtnActive : ''}`}
-                    onClick={() => setVolatility(v)}
-                    disabled={diagnoseLoading}
-                  >
-                    {VOLATILITY_LABELS[v]}
-                  </button>
-                ))}
-              </div>
-              <p className={styles.volatilityNote}>{VOLATILITY_NOTES[volatility]}</p>
-            </div>
-          </div>
+            </p>
+            {diagnosis?.meta.data_asof && (
+              <p className={styles.dataAsof}>데이터 기준일: {diagnosis.meta.data_asof}</p>
+            )}
         </div>
+
+        {(diagnosis?.meta.vol_warnings?.length ?? 0) > 0 && (
+          <div className={styles.volWarnBanner}>
+            일부 기초자산은 실측 변동성 데이터가 없어 보수적 기본값으로 추정했습니다.
+          </div>
+        )}
 
         {diagnoseError && <p className="errorMsg">{diagnoseError}</p>}
 
         {/* 핵심 수치 카드 */}
-        <div className={styles.metricsGrid}>
+        <div className={styles.metricsGrid} style={{ opacity: diagnoseLoading ? 0.4 : 1, transition: 'opacity 200ms ease' }}>
           <div className={styles.metricCard}>
             <p className={styles.metricLabel}>기대수익 (연환산)</p>
             <div className={styles.metricValue}>
@@ -212,28 +201,41 @@ export default function Result() {
         <div className={styles.section}>
           <h3 className={styles.sectionTitle}>광고 쿠폰 vs 실제 기대수익</h3>
           <p className={styles.sectionDesc}>손실 시나리오를 포함하면 기대수익은 낮아집니다.</p>
-          <div className={styles.couponCompare}>
-            <div className={styles.couponRow}>
-              <span className={styles.couponRowLabel}>광고 쿠폰 (연)</span>
-              <div className={styles.couponTrack}>
-                <div
-                  className={styles.couponFill}
-                  style={{ width: diagnosis ? `${couponPct}%` : '0%' }}
-                />
+          {(() => {
+            const couponNum   = diagnosis ? parseFloat(couponPct)   : 0
+            const expectedNum = diagnosis ? parseFloat(expectedPct) : 0
+            const toWidth = (v: number) => `${Math.abs(v)}%`
+            return (
+              <div className={styles.couponCompare}>
+                {/* 광고 쿠폰 — 항상 양수, 오른쪽 */}
+                <div className={styles.couponRow}>
+                  <span className={styles.couponRowLabel}>광고 쿠폰 (연)</span>
+                  <div className={styles.divergingTrack}>
+                    <div className={styles.divergingCenter} />
+                    <div
+                      className={`${styles.divergingBar} ${styles.divergingBarRight}`}
+                      style={{ width: diagnosis ? toWidth(couponNum) : '0%' }}
+                    />
+                  </div>
+                  <span className={styles.couponVal}>{couponPct}{diagnosis && '%'}</span>
+                </div>
+                {/* 기대수익 — 양수: 오른쪽(회색), 음수: 왼쪽(빨강) */}
+                <div className={styles.couponRow}>
+                  <span className={styles.couponRowLabel}>기대수익 (실질)</span>
+                  <div className={styles.divergingTrack}>
+                    <div className={styles.divergingCenter} />
+                    <div
+                      className={`${styles.divergingBar} ${expectedNum < 0 ? styles.divergingBarLeft : styles.divergingBarRight} ${expectedNum < 0 ? styles.divergingBarNegative : styles.divergingBarExpected}`}
+                      style={{ width: diagnosis ? toWidth(expectedNum) : '0%' }}
+                    />
+                  </div>
+                  <span className={`${styles.couponVal} ${diagnosis && expectedNum < 0 ? styles.couponValNegative : ''}`}>
+                    {expectedPct}{diagnosis && '%'}
+                  </span>
+                </div>
               </div>
-              <span className={styles.couponVal}>{couponPct}{diagnosis && '%'}</span>
-            </div>
-            <div className={styles.couponRow}>
-              <span className={styles.couponRowLabel}>기대수익 (실질)</span>
-              <div className={styles.couponTrack}>
-                <div
-                  className={`${styles.couponFill} ${styles.couponFillExpected}`}
-                  style={{ width: diagnosis ? `${Math.max(0, parseFloat(expectedPct))}%` : '0%' }}
-                />
-              </div>
-              <span className={styles.couponVal}>{expectedPct}{diagnosis && '%'}</span>
-            </div>
-          </div>
+            )
+          })()}
         </div>
 
         {/* 시나리오 분포 */}
@@ -275,28 +277,30 @@ export default function Result() {
 
         {/* 세 결말 비율 */}
         <div className={styles.section}>
-          <h3 className={styles.sectionTitle}>세 가지 결말</h3>
+          <h3 className={styles.sectionTitle}>상환 결과 비율</h3>
           {!diagnosis && <div className={styles.outcomeSkeleton} />}
           {diagnosis && (
             <>
               <div className={styles.outcomeBar}>
-                <div className={styles.outcomeEarly} style={{ width: `${diagnosis.outcome_split.early * 100}%` }} />
-                <div className={styles.outcomeMat}   style={{ width: `${diagnosis.outcome_split.maturity * 100}%` }} />
-                <div className={styles.outcomeLoss}  style={{ width: `${diagnosis.outcome_split.loss * 100}%` }} />
+                {diagnosis.outcome_split.early > 0 && <div className={styles.outcomeEarly} style={{ width: `${diagnosis.outcome_split.early * 100}%` }} />}
+                {diagnosis.outcome_split.maturity > 0 && <div className={styles.outcomeMat}   style={{ width: `${diagnosis.outcome_split.maturity * 100}%` }} />}
+                {diagnosis.outcome_split.loss > 0 && <div className={styles.outcomeLoss}  style={{ width: `${diagnosis.outcome_split.loss * 100}%` }} />}
               </div>
               <div className={styles.outcomeLabels}>
                 <span className={styles.outcomeLabel}>
                   <span className={`${styles.outcomeDot} ${styles.outcomeDotEarly}`} />
-                  조기상환 {(diagnosis.outcome_split.early * 100).toFixed(0)}%
+                  조기상환 {fmtOutcomePct(diagnosis.outcome_split.early)}%
                 </span>
                 <span className={styles.outcomeLabel}>
                   <span className={`${styles.outcomeDot} ${styles.outcomeDotMat}`} />
-                  만기상환 {(diagnosis.outcome_split.maturity * 100).toFixed(0)}%
+                  만기상환 {fmtOutcomePct(diagnosis.outcome_split.maturity)}%
                 </span>
-                <span className={styles.outcomeLabel}>
-                  <span className={`${styles.outcomeDot} ${styles.outcomeDotLoss}`} />
-                  원금손실 {(diagnosis.outcome_split.loss * 100).toFixed(0)}%
-                </span>
+                {diagnosis.outcome_split.loss > 0 && (
+                  <span className={styles.outcomeLabel}>
+                    <span className={`${styles.outcomeDot} ${styles.outcomeDotLoss}`} />
+                    원금손실 {fmtOutcomePct(diagnosis.outcome_split.loss)}%
+                  </span>
+                )}
               </div>
               <p className={styles.principalNote}>
                 투자금액 {formatKRW(diagnosis.principal)} 기준 기대수익: {formatKRW(diagnosis.expected_return_amount)}
@@ -339,7 +343,7 @@ export default function Result() {
 
         {/* 하단 버튼 */}
         <div className={styles.footer}>
-          <button className={styles.btnPrimary} onClick={() => navigate('/input')}>
+          <button className={styles.btnPrimary} onClick={() => { navigate('/input'); window.scrollTo(0, 0) }}>
             다른 상품 진단하기
           </button>
           <button className={styles.btnSecondary} onClick={() => window.print()}>

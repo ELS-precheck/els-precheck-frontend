@@ -36,6 +36,7 @@ export interface Preset {
   label: string
   one_line: string
   expected_grade: string
+  data_note: string
   els_terms: ElsTerms
 }
 
@@ -73,7 +74,9 @@ export interface DiagnoseData {
   meta: {
     num_paths: number
     compute_ms: number
+    steps: number
     data_asof: string
+    vol_warnings: { asset: string; vol: number; message: string }[]
   }
 }
 

@@ -110,6 +110,7 @@ export default function Input() {
   const [extractInterval, setExtractInterval] = useState(6)
   const [extractVolCorr,  setExtractVolCorr]  = useState<{ vol?: number[] | null; corr?: number[][] | null; underlyings?: string[] }>({})
   const [extractWarnings, setExtractWarnings] = useState<string[]>([])
+  const [selectedFile,    setSelectedFile]    = useState<File | null>(null)
   const [uploadError,     setUploadError]     = useState<string | null>(null)
   const extractRequestIdRef = useRef(0)
   const [extractError,    setExtractError]    = useState<string | null>(null)
@@ -122,12 +123,26 @@ export default function Input() {
   const [riskAppetite, setRiskAppetite] = useState<UserProfile['risk_appetite']>(null)
   const [amount,       setAmount]       = useState('')
 
+  useEffect(() => { window.scrollTo(0, 0) }, [])
+
   useEffect(() => {
     fetchPresets().then(res => {
       if (res.ok) setPresets(res.data.presets)
       else setPresetsError(res.error.message)
     }).catch(() => setPresetsError('프리셋을 불러오지 못했어요. 다시 시도해 주세요.'))
   }, [])
+
+  const handleFileRemove = () => {
+    setSelectedFile(null)
+    setExtractStatus('idle')
+    setExtractForm({ underlyings: '', coupon: '', maturity: '', barriers: '', knockIn: '' })
+    setExtractInterval(6)
+    setExtractWarnings([])
+    setExtractVolCorr({})
+    setUploadError(null)
+    setExtractError(null)
+    extractRequestIdRef.current++
+  }
 
   const handleFileSelect = async (file: File) => {
     setUploadError(null)
@@ -142,6 +157,7 @@ export default function Input() {
       setUploadError('10MB 이하 PDF만 올릴 수 있어요.')
       return
     }
+    setSelectedFile(file)
     const requestId = ++extractRequestIdRef.current
     setExtractStatus('loading')
     const res = await fetchExtract(file)
@@ -216,9 +232,9 @@ export default function Input() {
         {/* 페이지 헤더 */}
         <div className={styles.pageHeader}>
           <p className={styles.pageOverline}>STEP 02 · 상품 조건</p>
-          <h2 className={styles.pageTitle}>진단할 상품을 고르세요.</h2>
+          <h2 className={styles.pageTitle}>진단할 상품을 입력하세요.</h2>
           <p className={styles.pageSub}>
-            대표 구조 3개 중 선택하거나, 상품설명서 PDF를 올리거나, 조건을 직접 입력하세요.
+            예시 상품으로 체험하거나, 실제 상품설명서 PDF를 올려 숨은 위험을 확인하세요. 조건을 직접 입력할 수도 있습니다.
           </p>
         </div>
 
@@ -228,7 +244,7 @@ export default function Input() {
             <button
               key={tab}
               className={`${styles.tabItem} ${activeTab === tab ? styles.tabActive : ''}`}
-              onClick={() => setActiveTab(tab)}
+              onClick={() => { setActiveTab(tab); setUploadError(null); setExtractError(null); setDirectError(null) }}
             >
               {tab === 'preset' ? '프리셋' : tab === 'upload' ? 'PDF 업로드' : '직접 입력'}
             </button>
@@ -287,6 +303,9 @@ export default function Input() {
                       </span>
                     </div>
                   </div>
+                  {preset.data_note && (
+                    <p className={styles.presetDataNote}>{preset.data_note}</p>
+                  )}
                   <button
                     className={styles.btnPrimary}
                     onClick={e => { e.stopPropagation(); toDiagnose(preset.els_terms) }}
@@ -309,8 +328,18 @@ export default function Input() {
                 onDragLeave={() => setIsDragging(false)}
                 onDrop={handleDrop}
               >
-                {extractStatus === 'loading' ? (
-                  <p className={styles.uploadLoading}>Claude가 조건을 읽는 중입니다...</p>
+                {selectedFile ? (
+                  <div className={styles.uploadFileInfo}>
+                    <svg className={styles.uploadFileIcon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" strokeLinecap="round" strokeLinejoin="round"/>
+                      <polyline points="14 2 14 8 20 8" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                    <span className={styles.uploadFileName}>{selectedFile.name}</span>
+                    {extractStatus === 'loading'
+                      ? <span className={styles.uploadLoading}>읽는 중...</span>
+                      : <button className={styles.uploadFileRemove} onClick={handleFileRemove} aria-label="파일 제거">×</button>
+                    }
+                  </div>
                 ) : (
                   <>
                     <p className={styles.uploadTitle}>상품설명서 PDF를 여기에</p>
