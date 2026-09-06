@@ -25,7 +25,7 @@ export default function Header() {
         setToast(false)
         navigate('/input')
         window.scrollTo(0, 0)
-      }, 1500)
+      }, 800)
       return
     }
     navigate(path)
