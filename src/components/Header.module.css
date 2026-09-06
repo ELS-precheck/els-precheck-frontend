@@ -103,6 +103,10 @@
   .disclaimer { display: none; }
 }
 
+@media print {
+  .header { display: none; }
+}
+
 @media (max-width: 768px) {
   .inner { gap: 8px; }
 
