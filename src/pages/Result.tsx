@@ -15,7 +15,7 @@ function formatKRW(won: number): string {
 
 function fmtOutcomePct(v: number): string {
   const pct = v * 100
-  if (pct > 0 && pct < 0.5) return '<1'
+  if (pct > 0 && pct < 1) return '<1'
   return pct.toFixed(0)
 }
 
