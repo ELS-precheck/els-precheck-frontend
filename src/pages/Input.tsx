@@ -108,7 +108,7 @@ export default function Input() {
   const [extractStatus,   setExtractStatus]   = useState<'idle' | 'loading' | 'done' | 'error'>('idle')
   const [extractForm,     setExtractForm]     = useState<ExtractForm>({ underlyings: '', coupon: '', maturity: '', barriers: '', knockIn: '' })
   const [extractInterval, setExtractInterval] = useState(6)
-  const [extractVolCorr,  setExtractVolCorr]  = useState<{ vol?: number[] | null; corr?: number[][] | null }>({})
+  const [extractVolCorr,  setExtractVolCorr]  = useState<{ vol?: number[] | null; corr?: number[][] | null; underlyings?: string[] }>({})
   const [extractWarnings, setExtractWarnings] = useState<string[]>([])
   const [uploadError,     setUploadError]     = useState<string | null>(null)
   const extractRequestIdRef = useRef(0)
@@ -149,7 +149,7 @@ export default function Input() {
     if (res.ok) {
       setExtractForm(termsToExtractForm(res.data.els_terms))
       setExtractInterval(res.data.els_terms.check_interval_months)
-      setExtractVolCorr({ vol: res.data.els_terms.vol, corr: res.data.els_terms.corr })
+      setExtractVolCorr({ vol: res.data.els_terms.vol, corr: res.data.els_terms.corr, underlyings: res.data.els_terms.underlyings })
       setExtractWarnings(res.data.warnings)
       setExtractStatus('done')
     } else {
@@ -201,9 +201,11 @@ export default function Input() {
       return
     }
     setExtractError(null)
+    const orig = extractVolCorr.underlyings ?? []
+    const underlyingsMatch = terms.underlyings.length === orig.length && terms.underlyings.every((u, i) => u === orig[i])
     const volCorr: { vol?: number[] | null; corr?: number[][] | null } = {}
-    if (extractVolCorr.vol && terms.underlyings.length === extractVolCorr.vol.length) volCorr.vol = extractVolCorr.vol
-    if (extractVolCorr.corr && terms.underlyings.length === extractVolCorr.corr.length) volCorr.corr = extractVolCorr.corr
+    if (underlyingsMatch && extractVolCorr.vol) volCorr.vol = extractVolCorr.vol
+    if (underlyingsMatch && extractVolCorr.corr) volCorr.corr = extractVolCorr.corr
     toDiagnose({ ...terms, ...volCorr })
   }
 
